@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
-public class DestroyOnTrigger : MonoBehaviour
+public class Gold : MonoBehaviour
 {
-    private static int goldsTaken = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +19,9 @@ public class DestroyOnTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        goldsTaken++;
-        Debug.Log("Gold taken: " + goldsTaken);
+        
+        // Todo make player object pick up instead
+        ScoreKeeper.Instance.Gold++;
         Destroy(gameObject);
 
     }
