@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+
 public class Player : DamagableObject
 {
 
     public LayerMask clickableLayer;
     public GameObject projectile;
+    public Light clickLight;
     private NavMeshAgent navAgent;
     public float attackCooldown = 1.0f;
     private float attackTimer = 0;
@@ -24,6 +27,10 @@ public class Player : DamagableObject
     // Update is called once per frame
     void Update()
     {
+        if (navAgent.velocity.magnitude <= 0)
+        {
+            clickLight.transform.position = new Vector3(-200, 3, -200);
+        }
         attackTimer -= Time.deltaTime;
         //float distance = Vector3.Distance(player.transform.position, transform.position);
         if (Input.GetMouseButton(0))
@@ -34,6 +41,7 @@ public class Player : DamagableObject
             {
                 navAgent.isStopped = false;
                 navAgent.SetDestination(hitInfo.point);
+                clickLight.transform.position = new Vector3(hitInfo.point.x, 3, hitInfo.point.z);
             }
         }
 
@@ -42,6 +50,7 @@ public class Player : DamagableObject
             attackTimer = attackCooldown;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             navAgent.isStopped = true;
+            
             if (Physics.Raycast(ray, out var hitInfo, 100))
             {
                 Vector3 relativePos = (hitInfo.point - transform.position).normalized;
@@ -78,7 +87,11 @@ public class Player : DamagableObject
             Debug.Log(other.gameObject.name);
         }
     }
-    
 
+    public override void Die()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        base.Die();
+    }
 }
 

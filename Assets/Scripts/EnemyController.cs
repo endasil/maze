@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,7 +19,8 @@ public class EnemyController : DamagableObject
     public int attackPower = 1;
     public float attackCooldown = 1.0f;
     private float attackTimer = 0;
-
+    [SerializeField]
+    private LayerMask ignoredLayers;
 
     private Animator anim;
     // Start is called before the first frame update
@@ -44,24 +46,8 @@ public class EnemyController : DamagableObject
         }
 
         float distance = Vector3.Distance(player.transform.position, transform.position);
-        Ray ray = new Ray(transform.position, player.transform.position - transform.position);
+
         
-
-        anim.SetFloat("Speed_f", navAgent.velocity.magnitude);
-
-
-        if (Physics.Raycast(ray, out var hitInfo, 100))
-        {
-            //if (distance <= detectPlayerRadius)
-            if (hitInfo.collider.gameObject.tag == "Player")
-            {
-                Debug.Log($"{this.name} can see player");
-                navAgent.SetDestination(player.transform.position);
-            }
-            Debug.Log($"{this.name} found a {hitInfo.collider.gameObject.tag}");
-        }
-
-        //Debug.Log("distance: " + distance);
         attackTimer -= Time.deltaTime;
         if (distance <= navAgent.stoppingDistance)
         {
@@ -71,10 +57,34 @@ public class EnemyController : DamagableObject
                 attackTimer = attackCooldown;
                 Debug.Log($"{this.name} attacking player for {attackPower} damage.");
                 
+                // Set this to 0 to avoid going to run anim
+                anim.SetFloat("Speed_f", 0);
                 anim.SetTrigger("Attack_t");
 
                 player.TakeDamage(attackPower);
 
+            }
+        }
+        else // Not within range, 
+        {
+            anim.SetFloat("Speed_f", navAgent.velocity.magnitude);
+            Ray ray = new Ray(transform.position, player.transform.position - transform.position);
+            //Convert Layer Name to Layer Number
+            int treasureLayer = LayerMask.NameToLayer("Treasure");
+            int EnemyLayer = LayerMask.NameToLayer("Enemy");
+
+
+            int ignoreLayer = ~((1 << treasureLayer) | (1 << EnemyLayer));
+
+            if (Physics.Raycast(ray, out var hitInfo, 100, ignoreLayer))
+            {
+                //if (distance <= detectPlayerRadius)
+                if (hitInfo.collider.gameObject.tag == "Player")
+                {
+                    Debug.Log($"{this.name} can see player");
+                    navAgent.SetDestination(player.transform.position);
+                }
+                Debug.Log($"{this.name} found a {hitInfo.collider.gameObject.tag}");
             }
         }
     }
@@ -100,6 +110,8 @@ public class EnemyController : DamagableObject
     public override void Die()
     {
         dead = true;
+        anim.SetFloat("Speed_f", 0);
+        navAgent.isStopped = true;
         anim.SetTrigger("Die_t");
         Debug.Log("Dying..");
         Destroy(GetComponent<BoxCollider>());

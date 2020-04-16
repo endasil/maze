@@ -21,7 +21,10 @@ public class Gold : MonoBehaviour
     {
         
         // Todo make player object pick up instead
-        ScoreKeeper.Instance.Gold++;
+        if(other.gameObject.tag == "Player")
+        { 
+            ScoreKeeper.Instance.Gold++;
+        }
         Destroy(gameObject);
 
     }
