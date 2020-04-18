@@ -194,7 +194,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400008}
-  - component: {fileID: 11100002}
+  - component: {fileID: 521004669}
+  - component: {fileID: 521004670}
+  - component: {fileID: 521004671}
   m_Layer: 0
   m_Name: skeletonNormal
   m_TagString: Untagged
@@ -209,37 +211,75 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100008}
-  m_LocalRotation: {x: 0, y: -0.96521026, z: 0, w: 0.26147518}
+  m_LocalRotation: {x: 0, y: -0.9652108, z: 0, w: 0.2614732}
   m_LocalPosition: {x: 0.01161301, y: 0.5146427, z: -7.556445}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 400082}
   - {fileID: 400084}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &11100002
-Animation:
+  m_LocalEulerAnglesHint: {x: 0, y: -149.68501, z: 0}
+--- !u!65 &521004669
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100008}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.43, y: 0.85, z: 0.31}
+  m_Center: {x: 0, y: 0.45, z: 0}
+--- !u!114 &521004670
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100008}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400002, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
-  m_Animations:
-  - {fileID: 7400006, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
-  - {fileID: 7400002, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
-  - {fileID: 7400004, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
-  - {fileID: 7400008, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
-  - {fileID: 7400010, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
-  - {fileID: 7400012, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
-  - {fileID: 7400014, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae8f1142c27d3b84bbe41f44140dc6d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 30
+  hp: 30
+  renderer: {fileID: 13700000}
+  dead: 0
+  detectPlayerRadius: 20.77
+  continueChasePlayerRadius: 20
+  rotationSpeed: 5
+  chasing: 0
+  attackPower: 7
+  attackCooldown: 1
+  ignoredLayers:
+    serializedVersion: 2
+    m_Bits: 3072
+--- !u!195 &521004671
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100008}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 4.3
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 3
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &100010
 GameObject:
   m_ObjectHideFlags: 0

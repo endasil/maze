@@ -104,7 +104,10 @@ public class EnemyController : DamagableObject
         //Gizmos.color = Color.red;
         //Gizmos.DrawWireSphere(transform.position, detectPlayerRadius);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, navAgent.stoppingDistance);
+        if (navAgent)
+        {
+            Gizmos.DrawWireSphere(transform.position, navAgent.stoppingDistance);
+        }
     }
 
     public override void Die()

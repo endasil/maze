@@ -45,11 +45,11 @@ public class Player : DamagableObject
             }
         }
 
-        else if (Input.GetMouseButtonDown(1) && attackTimer <= 0)
+        if (Input.GetMouseButtonDown(1) && attackTimer <= 0)
         {
             attackTimer = attackCooldown;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            navAgent.isStopped = true;
+            //navAgent.isStopped = true;
             
             if (Physics.Raycast(ray, out var hitInfo, 100))
             {

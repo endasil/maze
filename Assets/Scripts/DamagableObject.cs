@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DamagableObject : MonoBehaviour
 {
+    public int maxHealth = 100;
     public int hp = 300;
     public Renderer renderer;
     Color originalColor;
@@ -21,6 +22,16 @@ public class DamagableObject : MonoBehaviour
 
     }
 
+    public virtual void Heal(int health)
+    {
+        hp += health;
+        if (hp > maxHealth)
+        {
+            hp = maxHealth;
+        }
+        Debug.Log($"{this.gameObject.name} Hp left: " + hp);
+        StartCoroutine(FlashObject(Color.green, 0.3f, .05f));
+    }
     public virtual void TakeDamage(int damage)
     {
         
@@ -38,17 +49,17 @@ public class DamagableObject : MonoBehaviour
 
     }
 
-    protected IEnumerator FlashObject(Color flashColor, float flashTime, float flashSpeed)
+    protected IEnumerator FlashObject(Color flashColor, float flashDuration, float delayBetweenFlashes)
     {
 
         var flashingFor = 0.0f;
         var newColor = flashColor;
-        while (flashingFor < flashTime)
+        while (flashingFor < flashDuration)
         {
             renderer.material.color = newColor;
             flashingFor += Time.deltaTime;
-            yield return new WaitForSeconds(flashSpeed);
-            flashingFor += flashSpeed;
+            yield return new WaitForSeconds(delayBetweenFlashes);
+            flashingFor += delayBetweenFlashes;
             if (newColor == flashColor)
             {
                 newColor = originalColor;
