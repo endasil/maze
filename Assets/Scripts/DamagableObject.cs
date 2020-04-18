@@ -5,6 +5,7 @@ using UnityEngine;
 public class DamagableObject : MonoBehaviour
 {
     public int maxHealth = 100;
+    
     public int hp = 300;
     public Renderer renderer;
     Color originalColor;
@@ -12,7 +13,8 @@ public class DamagableObject : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        originalColor = renderer.material.color;
+        
+    originalColor = renderer.material.color;
         Debug.Log($"{this.name} original color" + originalColor);
     }
 
