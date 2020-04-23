@@ -30,7 +30,6 @@ public class EnemyController : DamagableObject
         attackTimer = attackCooldown;
         navAgent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>();
-
         anim = GetComponent<Animator>();
     }
 
@@ -81,10 +80,9 @@ public class EnemyController : DamagableObject
                 //if (distance <= detectPlayerRadius)
                 if (hitInfo.collider.gameObject.tag == "Player")
                 {
-                    Debug.Log($"{this.name} can see player");
                     navAgent.SetDestination(player.transform.position);
                 }
-                Debug.Log($"{this.name} found a {hitInfo.collider.gameObject.tag}");
+                
             }
         }
     }

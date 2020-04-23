@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class Player : DamagableObject
 {
@@ -14,14 +17,32 @@ public class Player : DamagableObject
     public float attackCooldown = 1.0f;
     private float attackTimer = 0;
     public Interactable focus;
-
+    public GameObject floor;
+    public AudioClip projectileSound;
     public int Gold = 0;
+
+    public Transform floorParent;
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         navAgent = GetComponent<NavMeshAgent>();
-        
+        GameObject flooors = new GameObject();
+
+        foreach (Transform item in floorParent)
+        {
+            float tmp = item.position.y;
+            item.position.z = item.position.y;
+            item.position.y = tmp;
+        }
+        //for (var z = -60; z < 60; z+=4)
+        //{
+        //    for (var x = -60; x < 60; x+=4)
+        //    {
+        //        Instantiate(floor, new Vector3(x, 0,z), Quaternion.identity, flooors.transform);
+        //    }
+        //}
+
     }
 
     // Update is called once per frame
@@ -31,8 +52,7 @@ public class Player : DamagableObject
         {
             clickLight.transform.position = new Vector3(-200, 3, -200);
         }
-        attackTimer -= Time.deltaTime;
-        //float distance = Vector3.Distance(player.transform.position, transform.position);
+        
         if (Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -45,17 +65,17 @@ public class Player : DamagableObject
             }
         }
 
+        attackTimer -= Time.deltaTime;
         if (Input.GetMouseButtonDown(1) && attackTimer <= 0)
         {
             attackTimer = attackCooldown;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //navAgent.isStopped = true;
-            
             if (Physics.Raycast(ray, out var hitInfo, 100))
             {
                 Vector3 relativePos = (hitInfo.point - transform.position).normalized;
                 relativePos.y = 0.0f;
-                Instantiate(projectile, new Vector3(transform.position.x, 1f, transform.position.z),
+                AudioSource.PlayClipAtPoint(projectileSound, transform.position, 0.5f);
+                Instantiate(projectile, new Vector3(transform.position.x, transform.position.y, transform.position.z),
                     Quaternion.LookRotation(relativePos, Vector3.up));
             }
         }
@@ -84,7 +104,7 @@ public class Player : DamagableObject
     {
         if (other.tag != "Ground")
         {
-            Debug.Log(other.gameObject.name);
+            
         }
     }
 

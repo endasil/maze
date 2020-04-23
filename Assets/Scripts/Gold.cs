@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Gold : MonoBehaviour
 {
+    public AudioClip pickupSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,10 +23,15 @@ public class Gold : MonoBehaviour
         
         // Todo make player object pick up instead
         if(other.gameObject.tag == "Player")
-        { 
-            ScoreKeeper.Instance.Gold++;
+        {
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+
+            
+            var player = other.gameObject.GetComponent<Player>();
+            player.Gold++;
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        
 
     }
 }

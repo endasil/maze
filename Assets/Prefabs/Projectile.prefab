@@ -107,7 +107,7 @@ Halo:
   m_Color:
     serializedVersion: 2
     rgba: 4281479858
-  m_Size: 1.08
+  m_Size: 0.96
 --- !u!114 &114945669112505022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 40
-  power: 100
+  power: 10
   range: 19
   startPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &54565394038709194

@@ -15,7 +15,6 @@ public class DamagableObject : MonoBehaviour
     {
         
     originalColor = renderer.material.color;
-        Debug.Log($"{this.name} original color" + originalColor);
     }
 
     // Update is called once per frame
