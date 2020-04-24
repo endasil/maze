@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
 
     public int power = 10;
     public float range = 10;
+    public AudioClip wallImpact;
     [SerializeField]
     private Vector3 startPosition;
     // Start is called before the first frame update
@@ -33,7 +34,7 @@ public class Projectile : MonoBehaviour
         {
             return;
         }
-
+        AudioSource.PlayClipAtPoint(wallImpact, transform.position);
         var damagable = other.gameObject.GetComponent<DamagableObject>();
         if (damagable)
         {

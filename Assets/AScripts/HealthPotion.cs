@@ -5,6 +5,8 @@ using UnityEngine;
 public class HealthPotion : MonoBehaviour
 {
     public int power = 25;
+
+    public AudioClip pickupSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,12 +26,12 @@ public class HealthPotion : MonoBehaviour
         var damagable = other.gameObject.GetComponent<DamagableObject>();
         if (damagable)
         {
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
             damagable.Heal(power);
 
         }
-        //if (other.tag == "Wall")
-        //{
+    
         Destroy(gameObject);
-        //}
+        
     }
 }

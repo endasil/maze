@@ -20,7 +20,6 @@ public class Player : DamagableObject
     public GameObject floor;
     public AudioClip projectileSound;
     public int Gold = 0;
-
     public Transform floorParent;
     // Start is called before the first frame update
     protected override void Start()
@@ -29,12 +28,10 @@ public class Player : DamagableObject
         navAgent = GetComponent<NavMeshAgent>();
         GameObject flooors = new GameObject();
 
-        foreach (Transform item in floorParent)
-        {
-            float tmp = item.position.y;
-            item.position.z = item.position.y;
-            item.position.y = tmp;
-        }
+        //foreach (Transform item in floorParent)
+        //{
+        //    item.rotation.Set(item.rotation.x, item.rotation.y, item.rotation.z);
+        //}
         //for (var z = -60; z < 60; z+=4)
         //{
         //    for (var x = -60; x < 60; x+=4)
@@ -74,7 +71,7 @@ public class Player : DamagableObject
             {
                 Vector3 relativePos = (hitInfo.point - transform.position).normalized;
                 relativePos.y = 0.0f;
-                AudioSource.PlayClipAtPoint(projectileSound, transform.position, 0.5f);
+                AudioSource.PlayClipAtPoint(projectileSound, transform.position, 0.02f);
                 Instantiate(projectile, new Vector3(transform.position.x, transform.position.y, transform.position.z),
                     Quaternion.LookRotation(relativePos, Vector3.up));
             }
