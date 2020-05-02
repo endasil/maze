@@ -48,7 +48,7 @@ public class EnemyController : DamagableObject
 
         
         attackTimer -= Time.deltaTime;
-        if (distance <= navAgent.stoppingDistance)
+        if (distance <= navAgent.stoppingDistance +0.3)
         {
             FaceTarget();
             if (attackTimer <= 0)
@@ -67,7 +67,8 @@ public class EnemyController : DamagableObject
         else // Not within range, 
         {
             anim.SetFloat("Speed_f", navAgent.velocity.magnitude);
-            Ray ray = new Ray(transform.position, player.transform.position - transform.position);
+            var direction = (player.transform.position - transform.position).normalized;
+            Ray ray = new Ray(transform.position+direction, direction);
             //Convert Layer Name to Layer Number
             int treasureLayer = LayerMask.NameToLayer("Treasure");
             int EnemyLayer = LayerMask.NameToLayer("Enemy");
@@ -113,18 +114,13 @@ public class EnemyController : DamagableObject
         dead = true;
         anim.SetFloat("Speed_f", 0);
         navAgent.isStopped = true;
+        Destroy(navAgent);
         anim.SetTrigger("Die_t");
         Debug.Log("Dying..");
         Destroy(GetComponent<BoxCollider>());
+        Destroy(gameObject, 5);
         navAgent.isStopped = true;
-        StartCoroutine(DestroyObject(5));
-    }
 
-    private IEnumerator DestroyObject(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        Debug.Log("Destroying");
-        //Destroy(gameObject);
     }
 
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 public class ScoreKeeper : Singleton<ScoreKeeper>
 {
     
-    public TextMeshPro statsText;
+    public TextMeshProUGUI statsText;
     
     public Player player;
     // Start is called before the first frame update
@@ -20,6 +20,6 @@ public class ScoreKeeper : Singleton<ScoreKeeper>
     // Update is called once per frame
     void Update()
     {
-        statsText.SetText("HP: " + player.hp + " Gold: " + player.Gold);
+        statsText.SetText($"HP: {player.hp} Gold: {player.Gold} Keys:  {player.Keys} ");
     }
 }

@@ -141,12 +141,17 @@ MonoBehaviour:
     m_Bits: 512
   projectile: {fileID: 2923572703847529086, guid: be3b33c2e05b58742837bd9141e55a2e,
     type: 3}
-  clickLight: {fileID: 0}
+  clickLight: {fileID: 6505394030091287706, guid: 61c2992e949a28746b6d5b9059fac699,
+    type: 3}
   attackCooldown: 0.4
   focus: {fileID: 0}
   floor: {fileID: 0}
   projectileSound: {fileID: 8300000, guid: d57b35db7efe9214288f2bc024db4b25, type: 3}
   Gold: 0
+  floorParent: {fileID: 0}
+  wallToRepeat: {fileID: 4076986704820760, guid: 6d15e364ae6f49a7bf7ddf15edd1a453,
+    type: 3}
+  wallParent: {fileID: 0}
 --- !u!54 &1264608629
 Rigidbody:
   m_ObjectHideFlags: 0

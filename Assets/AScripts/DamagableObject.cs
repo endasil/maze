@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +14,17 @@ public class DamagableObject : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        
-    originalColor = renderer.material.color;
+
+        try
+        {
+            originalColor = renderer.material.color;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("BLÄÄÄÄ");
+            throw;
+        }
+    
     }
 
     // Update is called once per frame

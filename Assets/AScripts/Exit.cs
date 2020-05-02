@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Exit : MonoBehaviour
 {
@@ -15,15 +16,15 @@ public class Exit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(new Vector3(10f * Time.deltaTime, 0f, 0f));
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            Destroy(other.gameObject);
+            //Destroy(other.gameObject);
             textMesh.text = "You won!";
+            SceneManager.LoadScene("Level2");
         }
 
     }

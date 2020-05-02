@@ -27,7 +27,7 @@ public class EnemyShoot : MonoBehaviour
     {
         fireRate -= Time.deltaTime;
 
-        Vector3 direction = target.position- transform.position ;
+            Vector3 direction = target.position- transform.position ;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
 
         if (fireRate <= 0)
