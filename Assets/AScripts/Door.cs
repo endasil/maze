@@ -22,7 +22,6 @@ public class Door : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
 
-        Debug.Log("Trigger enter door" + other.gameObject.tag);
         // Todo make player object pick up instead
         if (other.gameObject.tag == "Player")
         {
@@ -30,10 +29,10 @@ public class Door : MonoBehaviour
             Debug.Log("Player found");
 
             var player = other.gameObject.GetComponent<Player>();
-            if (player.Keys > 0)
+            if (player.UseKey())
             {
                 Debug.Log("Player has keys");
-                player.Keys--;
+                
                 leftDoor.Rotate(Vector3.up, 90);
                 rightDoor.Rotate(Vector3.up, -90);
                 Destroy(GetComponent<NavMeshObstacle>());

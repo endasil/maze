@@ -20,7 +20,9 @@ public class Player : DamagableObject
     public Interactable focus;
     public GameObject floor;
     public AudioClip projectileSound;
-    public int Gold = 0;
+    public AudioClip noKey;
+    public AudioClip noMoney;
+    public int gold = 0;
     public Transform floorParent;
     public Transform wallToRepeat;
 
@@ -36,7 +38,7 @@ public class Player : DamagableObject
         GameObject flooors = new GameObject();
 
 
-//        DrawLvl2Walls();
+        //        DrawLvl2Walls();
 
 
         //for (var x = -60; x < 64; x += 4)
@@ -61,7 +63,7 @@ public class Player : DamagableObject
 
     }
 
-    
+
 
     // Update is called once per frame
     void Update()
@@ -118,6 +120,31 @@ public class Player : DamagableObject
                 }
             }
         }
+    }
+
+
+    public bool PayMoney(int amount)
+    {
+        if (gold >= amount)
+        {
+            gold -= amount;
+            return true;
+        }
+        AudioSource.PlayClipAtPoint(noMoney, transform.position, 1f);
+        return false;
+    }
+
+    public bool UseKey()
+    {
+        if (Keys > 0)
+        {
+            Keys--;
+            return true;
+        }
+
+        AudioSource.PlayClipAtPoint(noKey, transform.position, 1f);
+
+        return false;
     }
 
     private void SetFocus(Interactable newFocus)

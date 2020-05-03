@@ -38,9 +38,8 @@ public class ItemSale : MonoBehaviour
         {
 
             var player = other.gameObject.GetComponent<Player>();
-            if (player.Gold >= price)
+            if (player.PayMoney(price))
             {
-                player.Gold -= price;
                 Instantiate(itemOnSale, transform.position + displayItemOffset, Quaternion.identity);
                 Destroy(shopDisplayItem);
                 Destroy(gameObject);

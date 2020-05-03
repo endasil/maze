@@ -20,6 +20,6 @@ public class ScoreKeeper : Singleton<ScoreKeeper>
     // Update is called once per frame
     void Update()
     {
-        statsText.SetText($"HP: {player.hp} Gold: {player.Gold} Keys:  {player.Keys} ");
+        statsText.SetText($"HP: {player.hp} gold: {player.gold} Keys:  {player.Keys} ");
     }
 }

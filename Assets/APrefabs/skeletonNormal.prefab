@@ -254,6 +254,7 @@ MonoBehaviour:
   dead: 0
   detectPlayerRadius: 20.77
   continueChasePlayerRadius: 20
+  deathSound: {fileID: 8300000, guid: 1356887f4b6b3254796c32cd4e3f331b, type: 3}
   rotationSpeed: 5
   chasing: 0
   attackPower: 3

@@ -11,7 +11,7 @@ public class EnemyController : DamagableObject
     public float detectPlayerRadius = 5.0f;
     public float continueChasePlayerRadius = 20f;
     private Player player;
-
+    public AudioClip deathSound;
     private NavMeshAgent navAgent;
     public float rotationSpeed = 5.0f;
     private Rigidbody playerRb;
@@ -48,24 +48,33 @@ public class EnemyController : DamagableObject
 
         
         attackTimer -= Time.deltaTime;
-        if (distance <= navAgent.stoppingDistance +0.3)
+
+
+        if (distance <= navAgent.stoppingDistance + 1 && attackTimer <= 0)
+        {
+            //anim.SetFloat("Speed_f", 0);
+            anim.SetTrigger("Attack_t");
+            //Debug.Log("Starting attack Anim" + gameObject.name);
+        }
+
+        if (distance <= navAgent.stoppingDistance + 0.3)
         {
             FaceTarget();
             if (attackTimer <= 0)
             {
                 attackTimer = attackCooldown;
-                Debug.Log($"{this.name} attacking player for {attackPower} damage.");
-                
-                // Set this to 0 to avoid going to run anim
-                anim.SetFloat("Speed_f", 0);
-                anim.SetTrigger("Attack_t");
+                Debug.Log($"{this.name} attacking player for {attackPower} damage. attackTimer {attackTimer}");
 
+                // Set this to 0 to avoid going to run anim
+                //anim.SetFloat("Speed_f", 0);
+                //anim.SetTrigger("Attack_t");
                 player.TakeDamage(attackPower);
 
             }
         }
         else // Not within range, 
         {
+            Debug.Log($"navAgent velocity for {gameObject.name} {navAgent.velocity.magnitude}");
             anim.SetFloat("Speed_f", navAgent.velocity.magnitude);
             var direction = (player.transform.position - transform.position).normalized;
             Ray ray = new Ray(transform.position+direction, direction);
@@ -111,15 +120,18 @@ public class EnemyController : DamagableObject
 
     public override void Die()
     {
+        if (deathSound)
+        {
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
+        }
+
         dead = true;
         anim.SetFloat("Speed_f", 0);
-        navAgent.isStopped = true;
-        Destroy(navAgent);
         anim.SetTrigger("Die_t");
         Debug.Log("Dying..");
         Destroy(GetComponent<BoxCollider>());
+        Destroy(navAgent);
         Destroy(gameObject, 5);
-        navAgent.isStopped = true;
 
     }
 
