@@ -26,12 +26,15 @@ public class HealthPotion : MonoBehaviour
         var damagable = other.gameObject.GetComponent<DamagableObject>();
         if (damagable)
         {
-            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
-            damagable.Heal(power);
+            if (damagable.Heal(power))
+            {
+                AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+                Destroy(gameObject);
+            }
 
         }
     
-        Destroy(gameObject);
+        
         
     }
 }

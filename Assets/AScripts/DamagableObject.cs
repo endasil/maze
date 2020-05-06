@@ -5,12 +5,16 @@ using UnityEngine;
 
 public class DamagableObject : MonoBehaviour
 {
+    [Header("Stats")]
     public int maxHealth = 100;
-    
     public int hp = 300;
+    [Header("Init Configs")]
     public Renderer renderer;
-    Color originalColor;
-    public bool dead = false;
+
+    private Color originalColor;
+    
+    [SerializeField]
+    protected bool dead = false;
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -33,8 +37,12 @@ public class DamagableObject : MonoBehaviour
 
     }
 
-    public virtual void Heal(int health)
+    public virtual bool Heal(int health)
     {
+        if (hp >= maxHealth)
+        {
+            return false;
+        }
         hp += health;
         if (hp > maxHealth)
         {
@@ -42,6 +50,7 @@ public class DamagableObject : MonoBehaviour
         }
         Debug.Log($"{this.gameObject.name} Hp left: " + hp);
         StartCoroutine(FlashObject(Color.green, 0.3f, .05f));
+        return true;
     }
     public virtual void TakeDamage(int damage)
     {

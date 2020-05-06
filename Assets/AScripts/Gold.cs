@@ -28,7 +28,7 @@ public class Gold : MonoBehaviour
 
             
             var player = other.gameObject.GetComponent<Player>();
-            player.gold++;
+            player.GiveGold(1);
             Destroy(gameObject);
         }
         

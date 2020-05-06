@@ -10,26 +10,41 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Player : DamagableObject
 {
-
-    public LayerMask clickableLayer;
-    public GameObject projectile;
-    public Light clickLight;
-    private NavMeshAgent navAgent;
     public float attackCooldown = 1.0f;
-    private float attackTimer = 0;
-    public Interactable focus;
-    public GameObject floor;
+    private int weaponLevel = 0;
+
+    [Header("Stats")]
+    [SerializeField]
+    public int gold = 0;
+    public int Keys = 0;
+
+
+    [Header("Audio")]
     public AudioClip projectileSound;
     public AudioClip noKey;
     public AudioClip noMoney;
-    public int gold = 0;
+
+
+    
+    [Header("Init Configs")]
+    [SerializeField]
+    private Light clickLight;
+    [SerializeField]
+    private NavMeshAgent navAgent;
+    [SerializeField]
+    private LayerMask clickableLayer;
+    [SerializeField]
+    private List<Projectile> ProjectileTypes;
+
+    [Header("Experimental")]
     public Transform floorParent;
     public Transform wallToRepeat;
-
     public Transform wallParent;
+    public GameObject floor;
+    public Interactable focus;
 
-    public int Keys = 0;
 
+    private float attackTimer = 0;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -100,7 +115,7 @@ public class Player : DamagableObject
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookDirection, Time.deltaTime * 80);
 
                 AudioSource.PlayClipAtPoint(projectileSound, transform.position, 0.02f);
-                GameObject clone = Instantiate(projectile, new Vector3(position.x, position.y, position.z),
+                GameObject clone = Instantiate(ProjectileTypes[weaponLevel].gameObject, new Vector3(position.x, position.y, position.z),
                     Quaternion.LookRotation(direction, Vector3.up)) as GameObject;
                 clone.SetActive(true);
                 ;
@@ -164,6 +179,14 @@ public class Player : DamagableObject
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         base.Die();
+    }
+
+
+
+    public bool GiveGold(int amount)
+    {
+        gold += amount;
+        return true;
     }
 
     private void DrawLvl2Walls()
@@ -565,5 +588,19 @@ public class Player : DamagableObject
         (Instantiate(wallToRepeat, new Vector3(20 * WALL_SIZE, 0 * WALL_SIZE, rowNr * WALL_SIZE), Quaternion.identity,
             wallParent)).gameObject.name = $"{wallToRepeat.gameObject.name}-R{rowNr}";
     }
+
+    public bool UpgradetWeaponLevel(int level)
+    {
+
+        if (weaponLevel <= level)
+        {
+            weaponLevel = level;
+            return true;
+        }
+
+        return false;
+    }
+
+    
 }
 
