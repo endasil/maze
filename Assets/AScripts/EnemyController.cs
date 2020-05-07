@@ -74,7 +74,6 @@ public class EnemyController : DamagableObject
         }
         else // Not within range, 
         {
-            Debug.Log($"navAgent velocity for {gameObject.name} {navAgent.velocity.magnitude}");
             anim.SetFloat("Speed_f", navAgent.velocity.magnitude);
             var direction = (player.transform.position - transform.position).normalized;
             Ray ray = new Ray(transform.position+direction, direction);

@@ -7,10 +7,15 @@ using UnityEngine.SceneManagement;
 public class Exit : MonoBehaviour
 {
     private TextMeshPro textMesh;
+    public SaveData save;
+
+    public Player player;
     // Start is called before the first frame update
     void Start()
     {
         textMesh = GetComponent<TextMeshPro>();
+        player = FindObjectOfType<Player>();
+        save = FindObjectOfType<SaveData>();
     }
 
     // Update is called once per frame
@@ -22,8 +27,9 @@ public class Exit : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            //Destroy(other.gameObject);
-            textMesh.text = "You won!";
+            
+            textMesh.text = "";
+            save.SavePlayer(player.gold, player.GetWeaponLevel());
             SceneManager.LoadScene("Level2");
         }
 

@@ -14230,9 +14230,14 @@ MonoBehaviour:
   attackCooldown: 0.4
   gold: 100
   Keys: 0
+  weaponLevel: 0
   projectileSound: {fileID: 8300000, guid: d57b35db7efe9214288f2bc024db4b25, type: 3}
   noKey: {fileID: 8300000, guid: e01ee1f1a684c14469bcc0afc9f93c9b, type: 3}
   noMoney: {fileID: 8300000, guid: 94aba472f881d344a98be235b6134d72, type: 3}
+  hitSounds:
+  - {fileID: 8300000, guid: 4191632168f3a104994d2f239dc1a619, type: 3}
+  - {fileID: 8300000, guid: 6954ba7cefab57b4fa331f229a1cf84c, type: 3}
+  - {fileID: 8300000, guid: 8e590e4c42cdc614f946fc478c88a8b4, type: 3}
   clickLight: {fileID: 0}
   navAgent: {fileID: 0}
   clickableLayer:
@@ -14247,6 +14252,8 @@ MonoBehaviour:
   wallParent: {fileID: 0}
   floor: {fileID: 0}
   focus: {fileID: 0}
+  nextHitSoundTime: 0
+  hitSoundRepeatDelay: 1
 --- !u!33 &2991320869717173332
 MeshFilter:
   m_ObjectHideFlags: 0

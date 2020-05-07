@@ -4,26 +4,33 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
+
+
 public class Player : DamagableObject
 {
     public float attackCooldown = 1.0f;
-    private int weaponLevel = 0;
+    
 
     [Header("Stats")]
     [SerializeField]
     public int gold = 0;
+    [SerializeField]
     public int Keys = 0;
+    [SerializeField]
+    private int weaponLevel = 0;
 
 
     [Header("Audio")]
     public AudioClip projectileSound;
     public AudioClip noKey;
     public AudioClip noMoney;
-
+    public List<AudioClip> hitSounds;
+    private AudioSource audio;
 
     
     [Header("Init Configs")]
@@ -43,13 +50,19 @@ public class Player : DamagableObject
     public GameObject floor;
     public Interactable focus;
 
-
+    public float nextHitSoundTime;
+    public float hitSoundRepeatDelay = 1;
     private float attackTimer = 0;
+
     // Start is called before the first frame update
     protected override void Start()
     {
+        nextHitSoundTime = Time.time + hitSoundRepeatDelay;
         base.Start();
+        audio = GetComponent<AudioSource>();
         navAgent = GetComponent<NavMeshAgent>();
+        var save = SaveData.instance;
+        save.LoadPlayer(this);
         GameObject flooors = new GameObject();
 
 
@@ -78,11 +91,25 @@ public class Player : DamagableObject
 
     }
 
+    public void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);
 
+
+
+        if (nextHitSoundTime < Time.time && hitSounds.Count > 0)
+        {
+            nextHitSoundTime = Time.time + hitSoundRepeatDelay;
+            var soundPlayed = Random.Range(0, hitSounds.Count);
+            audio.PlayOneShot(hitSounds[soundPlayed], 0.2f);
+        }
+
+    }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (navAgent.velocity.magnitude <= 0)
         {
             clickLight.transform.position = new Vector3(-200, 3, -200);
@@ -90,8 +117,8 @@ public class Player : DamagableObject
 
         if (Input.GetMouseButton(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo, 100, clickableLayer))
             {
                 navAgent.isStopped = false;
@@ -111,9 +138,12 @@ public class Player : DamagableObject
                 direction.y = 0.0f;
                 var position = transform.position;
                 position += direction * 1.1f;
+                
                 Quaternion lookDirection = Quaternion.LookRotation((new Vector3(direction.x, 0, direction.z)));
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookDirection, Time.deltaTime * 80);
 
+
+                audio.PlayOneShot(projectileSound, 0.02f);
                 AudioSource.PlayClipAtPoint(projectileSound, transform.position, 0.02f);
                 GameObject clone = Instantiate(ProjectileTypes[weaponLevel].gameObject, new Vector3(position.x, position.y, position.z),
                     Quaternion.LookRotation(direction, Vector3.up)) as GameObject;
@@ -183,6 +213,10 @@ public class Player : DamagableObject
 
 
 
+    public void SetGold(int amount)
+    {
+        gold = amount;
+    }
     public bool GiveGold(int amount)
     {
         gold += amount;
@@ -589,6 +623,10 @@ public class Player : DamagableObject
             wallParent)).gameObject.name = $"{wallToRepeat.gameObject.name}-R{rowNr}";
     }
 
+    public int GetWeaponLevel()
+    {
+        return weaponLevel;
+    }
     public bool UpgradetWeaponLevel(int level)
     {
 
