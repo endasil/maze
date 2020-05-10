@@ -14,8 +14,9 @@ public class ActivateObjectsOnCollision : MonoBehaviour
     [SerializeField]
     protected List<GameObject> objectsToActivate;
     public OnActivatedEvent notifyWhenActivated;
-
+    public bool activateOnProjectile = true;
     public bool activated = false;
+    public AudioClip activationSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +34,7 @@ public class ActivateObjectsOnCollision : MonoBehaviour
         if (activated)
             return;
 
-        if (other.gameObject.tag == "Player" || other.gameObject.tag == "PlayerProjectile")
+        if (other.gameObject.tag == "Player" || (other.gameObject.tag == "PlayerProjectile" && activateOnProjectile))
         {
             activated = true;
 
@@ -43,6 +44,11 @@ public class ActivateObjectsOnCollision : MonoBehaviour
             }
 
             notifyWhenActivated.Invoke(this.gameObject);
+
+            if (activationSound)
+            {
+                AudioSource.PlayClipAtPoint(activationSound, gameObject.transform.position);
+            }
         }
     }
 

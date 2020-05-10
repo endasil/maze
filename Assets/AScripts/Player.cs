@@ -65,6 +65,7 @@ public class Player : DamagableObject
         save.LoadPlayer(this);
         GameObject flooors = new GameObject();
 
+        DrawLvl2Walls();
 
         //        DrawLvl2Walls();
 
@@ -227,35 +228,35 @@ public class Player : DamagableObject
     {
         // Spawn 33 north 
         const int WALL_SIZE = 4;
-        for (var wallNr = 0; wallNr < 33; wallNr++)
+        for (var wallNr = 0; wallNr < 31; wallNr++)
         {
-            (Instantiate(wallToRepeat, new Vector3(wallNr * WALL_SIZE, 0, 0), Quaternion.identity, wallParent)).gameObject
+            (Instantiate(wallToRepeat, new Vector3(-60 + wallNr * WALL_SIZE, 0, 52), Quaternion.Euler(0,90,0), wallParent)).gameObject
                 .name = $"{wallToRepeat.gameObject.name}-NORTH";
         }
 
 
         // Spawn 33 south
 
-        for (var wallNr = 0; wallNr < 33; wallNr++)
+        for (var wallNr = 0; wallNr < 31; wallNr++)
         {
-            (Instantiate(wallToRepeat, new Vector3(wallNr * WALL_SIZE, 0, 30 * 4), Quaternion.identity, wallParent))
-                .gameObject.name = $"{wallToRepeat.gameObject.name}-SOUTH";
+            (Instantiate(wallToRepeat, new Vector3(-60+ wallNr * WALL_SIZE, 0, -60), Quaternion.Euler(0, 90, 0), wallParent))
+                .gameObject.name = $"{wallToRepeat.gameObject.name}-SOUTH270";
         }
 
         // West
-        for (var wallNr = 1; wallNr < 30; wallNr++)
+        for (var wallNr = 0; wallNr < 28; wallNr++)
         {
-            (Instantiate(wallToRepeat, new Vector3(0, 0, wallNr * WALL_SIZE), Quaternion.identity, wallParent)).gameObject
+            (Instantiate(wallToRepeat, new Vector3(-62, 0, -58+wallNr * WALL_SIZE), Quaternion.Euler(0, 180, 0), wallParent)).gameObject
                 .name = $"{wallToRepeat.gameObject.name}-WEST";
         }
 
         // East
-        for (var wallNr = 1; wallNr < 30; wallNr++)
+        for (var wallNr = 0; wallNr < 28; wallNr++)
         {
-            (Instantiate(wallToRepeat, new Vector3(32 * 4, 0, wallNr * WALL_SIZE), Quaternion.identity, wallParent))
-                .gameObject.name = $"{wallToRepeat.gameObject.name}-EAST";
+            (Instantiate(wallToRepeat, new Vector3(62, 0, -58+wallNr * WALL_SIZE), Quaternion.Euler(0, 180, 0), wallParent)).gameObject.name = $"{wallToRepeat.gameObject.name}-EAST";
         }
 
+        return;
 
         int rowNr = 1;
         // ROW 1

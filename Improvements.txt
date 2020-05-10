@@ -1,0 +1,21 @@
+
+10/5 Adding textured walls around level 1 instead of the green ones.
+
+9/5 9:50 Set smoke on thorch to be awake even when the rest of the torch is off. Moved the chest
+to reduce chance of it activating on player.
+
+
+8/5 fixed an issue with missing box collider on major health potions, making it impossible 
+for players to take them. Replaced a minor health potion with a major health potion on lvl 2.
+Added some broken walls.
+Lower speed of two first skeletons from 9 to 8 on lvl 2. Decreased one of the skeletons in the 
+beginnings hp to 30.
+
+
+
+Release 0.9 09/5
+Added a graphical health bar instead of text (Thanks to Kallie Experiments for the suggestion) as well as sound effects when the player gets hit. Both these things should make it easier for you to notice when something is attacking you. Also the graphical health bar makes it quicker to see approximately how much hp you have left at a glance. 
+Fixed issue with major health potions not having any collision box, making it impossible to take them. 
+Added a minor change that makes it easier to figure out how to unlock the hidden chest at level 1.
+Changed the tutorial text on level 1 so that it is now on lying down on the floor. 
+Added a text at the shop explaining that you can spend money to buy health refill and weapon upgrade.

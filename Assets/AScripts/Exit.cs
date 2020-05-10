@@ -6,10 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class Exit : MonoBehaviour
 {
+    
     private TextMeshPro textMesh;
-    public SaveData save;
+    private SaveData save;
 
-    public Player player;
+    [SerializeField]
+    private string nextLevel = "Level2";
+    private Player player;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,10 +30,17 @@ public class Exit : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            
-            textMesh.text = "";
-            save.SavePlayer(player.gold, player.GetWeaponLevel());
-            SceneManager.LoadScene("Level2");
+            if (nextLevel != "" && nextLevel != null)
+            {
+                textMesh.text = "";
+                save.SavePlayer(player.gold, player.GetWeaponLevel());
+                SceneManager.LoadScene(nextLevel);
+            }
+            else
+            {
+                textMesh.text = "You won!";
+                Destroy(player);
+            }
         }
 
     }

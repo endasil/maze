@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4000868798636391501}
   - component: {fileID: 4000868798636391498}
   - component: {fileID: 4000868798636391499}
+  - component: {fileID: -1896470867138736663}
   m_Layer: 0
   m_Name: Major Health Potion
   m_TagString: Untagged
@@ -95,6 +96,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   power: 50
   pickupSound: {fileID: 8300000, guid: 929d0467b3594f74886739cf54329177, type: 3}
+--- !u!65 &-1896470867138736663
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000868798636391496}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.19301748, y: 0.22855707, z: 0.19301653}
+  m_Center: {x: 0.00000023841858, y: 0.11134916, z: 0.00000023841858}
 --- !u!1 &4000868800238663801
 GameObject:
   m_ObjectHideFlags: 0

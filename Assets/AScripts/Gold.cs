@@ -6,7 +6,6 @@ using UnityEngine;
 public class Gold : MonoBehaviour
 {
     public AudioClip pickupSound;
-
     public int goldValue = 1;
     // Start is called before the first frame update
     void Start()

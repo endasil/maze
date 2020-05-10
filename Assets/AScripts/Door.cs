@@ -7,6 +7,8 @@ public class Door : MonoBehaviour
 {
     public Transform leftDoor;
     public Transform rightDoor;
+
+    private AudioClip openSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,13 +21,19 @@ public class Door : MonoBehaviour
         
     }
 
+
+    
     void OnTriggerEnter(Collider other)
     {
-
-        // Todo make player object pick up instead
+        
         if (other.gameObject.tag == "Player")
         {
-            //AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+
+            if (openSound)
+            {
+                AudioSource.PlayClipAtPoint(openSound, transform.position);
+            }
+
             Debug.Log("Player found");
 
             var player = other.gameObject.GetComponent<Player>();

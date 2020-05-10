@@ -12,7 +12,7 @@ public class FlickerLight : MonoBehaviour
         Light light = GetComponent<Light>();
         light.type = LightType.Point;
         light.shadows = LightShadows.Soft;
-        light.range = 5f;
+//        light.range = 5f;
     }
     void Update()
     {
