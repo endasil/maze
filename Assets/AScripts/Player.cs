@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Analytics;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Quaternion = UnityEngine.Quaternion;
@@ -21,8 +22,7 @@ public class Player : DamagableObject
     public int gold = 0;
     [SerializeField]
     public int Keys = 0;
-    [SerializeField]
-    private int weaponLevel = 0;
+    [SerializeField] public int weaponLevel = 0;
 
 
     [Header("Audio")]
@@ -64,8 +64,7 @@ public class Player : DamagableObject
         var save = SaveData.instance;
         save.LoadPlayer(this);
         GameObject flooors = new GameObject();
-
-        DrawLvl2Walls();
+        
 
         //        DrawLvl2Walls();
 
@@ -208,6 +207,14 @@ public class Player : DamagableObject
 
     public override void Die()
     {
+        
+        var dict = new Dictionary<string,object>();
+        dict.Add("position", gameObject.transform.position);
+        dict.Add("timeOnLevel", Time.timeSinceLevelLoad);
+        dict.Add("timeSinceGameStart", Time.time);
+        dict.Add("weaponLevel", weaponLevel);
+
+        AnalyticsEvent.GameOver(SceneManager.GetActiveScene().name,dict);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         base.Die();
     }

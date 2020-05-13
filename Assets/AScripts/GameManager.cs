@@ -26,7 +26,7 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     void Update()
     {
-        statsText.SetText($"Gold: {player.gold} Keys:  {player.Keys} ");
+        statsText.SetText($"{player.Keys} Gold: {player.gold}");
         healthBar.size = (float)player.hp / player.maxHealth;
     }
 }
