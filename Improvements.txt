@@ -1,4 +1,9 @@
 
+14/5 fixed so that the hit damagableObject script find all renderers of an object
+
+13/5 started experimenting with adding boss level and rotating 
+-------
+
 10/5 Adding textured walls around level 1 instead of the green ones.
 
 9/5 9:50 Set smoke on thorch to be awake even when the rest of the torch is off. Moved the chest

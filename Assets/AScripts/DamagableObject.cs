@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,28 +7,48 @@ public class DamagableObject : MonoBehaviour
     [Header("Stats")]
     public int maxHealth = 100;
     public int hp = 300;
+    [Header("Audio")]
+    public List<AudioClip> hitSounds;
+    protected float nextHitSoundTime = 1.0f;
+    protected float hitSoundRepeatDelay = 1;
     [Header("Init Configs")]
-    public Renderer renderer;
-
-    private Color originalColor;
-    
+    private List<Color> originalColors = new List<Color>();
     [SerializeField]
     protected bool dead = false;
+
+    List<Renderer> rendererList = new List<Renderer>();
+    void GetRenderers()
+    {
+        foreach (Renderer objectRenderer in gameObject.GetComponentsInChildren<Renderer>())
+        {
+
+            if (objectRenderer.material.HasProperty("_Color"))
+            {
+                rendererList.Add(objectRenderer);
+            }
+            else
+            {
+                Debug.Log($"No renderer on object {objectRenderer.name}");
+            }
+        }
+    }
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        GetRenderers();
+        nextHitSoundTime = Time.time + hitSoundRepeatDelay;
+        foreach (var r in rendererList)
+        {
 
-        try
-        {
-            originalColor = renderer.material.color;
+            originalColors.Add(r.material.color);
+
         }
-        catch (Exception e)
-        {
-            Debug.Log("BLÄÄÄÄ");
-            throw;
-        }
-    
+
     }
+
+
+
 
     // Update is called once per frame
     void Update()
@@ -54,43 +73,57 @@ public class DamagableObject : MonoBehaviour
     }
     public virtual void TakeDamage(int damage)
     {
-        
-        if(dead)
+
+        if (dead)
             return;
-        
+
         hp -= damage;
-        Debug.Log($"{this.gameObject.name} Hp left: " + hp);
+        //Debug.Log($"{this.gameObject.name} Hp left: " + hp);
         StartCoroutine(FlashObject(Color.red, 0.5f, .07f));
         if (hp <= 0)
         {
             dead = true;
             Die();
         }
+        else if (nextHitSoundTime < Time.time && hitSounds.Count > 0)
+        {
+            nextHitSoundTime = Time.time + hitSoundRepeatDelay;
+            var soundToPlay = Random.Range(0, hitSounds.Count);
+            AudioSource.PlayClipAtPoint(hitSounds[soundToPlay], transform.position);
+            
+        }
+        
 
     }
 
-    protected IEnumerator FlashObject(Color flashColor, float flashDuration, float delayBetweenFlashes)
+    protected IEnumerator FlashObject(Color flashColor, float totalTimeToKeepFlashingBetweenColors, float delayBetweenColorChanges)
     {
 
         var flashingFor = 0.0f;
-        var newColor = flashColor;
-        while (flashingFor < flashDuration)
+        var setFToFlashColor = true;
+        while (flashingFor < totalTimeToKeepFlashingBetweenColors)
         {
-            renderer.material.color = newColor;
+
+            for (int i = 0; i < rendererList.Count; i++)
+            {
+                rendererList[i].material.color = setFToFlashColor ? flashColor : originalColors[i];
+            }
+
             flashingFor += Time.deltaTime;
-            yield return new WaitForSeconds(delayBetweenFlashes);
-            flashingFor += delayBetweenFlashes;
-            if (newColor == flashColor)
-            {
-                newColor = originalColor;
-            }
-            else
-            {
-                newColor = flashColor;
-            }
+            yield return new WaitForSeconds(delayBetweenColorChanges);
+            flashingFor += delayBetweenColorChanges;
+            setFToFlashColor = !setFToFlashColor;
+
+
+        }
+        // Set back to original color after flashing is done
+
+        for (int i = 0; i < rendererList.Count; i++)
+        {
+            rendererList[i].material.color = originalColors[i];
+
         }
 
-        renderer.material.color = originalColor;
     }
 
 

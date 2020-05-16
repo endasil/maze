@@ -8,6 +8,8 @@ TagManager:
   - DamagableObject
   - Ground
   - PlayerProjectile
+  - Boss1
+  - Floor
   layers:
   - Default
   - TransparentFX

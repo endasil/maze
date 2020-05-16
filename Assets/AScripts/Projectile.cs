@@ -8,15 +8,19 @@ public class Projectile : MonoBehaviour
 
     public int power = 10;
     public float range = 10;
+    
     public AudioClip wallImpact;
     [SerializeField]
     private Vector3 startPosition;
+
+    public string ownerTag = "Player";
     // Start is called before the first frame update
     void Start()
     {
         startPosition = gameObject.transform.position;
     }
 
+    
     // Update is called once per frame
     void Update()
     {
@@ -30,7 +34,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" || other.tag == "Ground")
+        if (other.tag == ownerTag || other.tag == "Ground")
         {
             return;
         }

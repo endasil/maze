@@ -64,18 +64,11 @@ public class Player : DamagableObject
         var save = SaveData.instance;
         save.LoadPlayer(this);
         GameObject flooors = new GameObject();
-        
-
-        //        DrawLvl2Walls();
 
 
-        //for (var x = -60; x < 64; x += 4)
-        //{
-        //    Instantiate(wallToRepeat, new Vector3(x, 0, 2), Quaternion.identity, wallParent);
-        //    Instantiate(wallToRepeat, new Vector3(x, 0, -120), Quaternion.identity, wallParent);
-        //    Instantiate(wallToRepeat, new Vector3(60, 0, -60 + x), Quaternion.identity, wallParent);
-        //    Instantiate(wallToRepeat, new Vector3(-60, 0, -60 + x), Quaternion.identity, wallParent);
-        //}
+        //DrawLvl2Walls();
+
+
         //foreach (Transform item in floorParent)
         //{
         //    //item.rotation.Set(item.rotation.x, item.rotation.y, item.rotation.z);
@@ -91,17 +84,27 @@ public class Player : DamagableObject
 
     }
 
+    private void DrawLevel1Walls()
+    {
+        //for (var x = -60; x < 64; x += 4)
+        //{
+        //    Instantiate(wallToRepeat, new Vector3(x, 0, 2), Quaternion.identity, wallParent);
+        //    Instantiate(wallToRepeat, new Vector3(x, 0, -120), Quaternion.identity, wallParent);
+        //    Instantiate(wallToRepeat, new Vector3(60, 0, -60 + x), Quaternion.identity, wallParent);
+        //    Instantiate(wallToRepeat, new Vector3(-60, 0, -60 + x), Quaternion.identity, wallParent);
+        //}
+    }
+
     public void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
 
 
-
         if (nextHitSoundTime < Time.time && hitSounds.Count > 0)
         {
             nextHitSoundTime = Time.time + hitSoundRepeatDelay;
-            var soundPlayed = Random.Range(0, hitSounds.Count);
-            audio.PlayOneShot(hitSounds[soundPlayed], 0.2f);
+            var soundToPlay = Random.Range(0, hitSounds.Count);
+            audio.PlayOneShot(hitSounds[soundToPlay], 0.2f);
         }
 
     }

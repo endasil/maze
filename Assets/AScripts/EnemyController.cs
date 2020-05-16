@@ -8,21 +8,22 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : DamagableObject
 {
-    public float detectPlayerRadius = 5.0f;
-    public float continueChasePlayerRadius = 20f;
-    private Player player;
-    public AudioClip deathSound;
-    private NavMeshAgent navAgent;
+    public float detectPlayerRadius = 100.0f;
+    protected Player player;
+    protected AudioClip deathSound;
+    protected  NavMeshAgent navAgent;
     public float rotationSpeed = 5.0f;
-    private Rigidbody playerRb;
-    public bool chasing = false;
     public int attackPower = 1;
     public float attackCooldown = 1.0f;
     private float attackTimer = 0;
+    //protected Projectile
     [SerializeField]
     private LayerMask ignoredLayers;
 
+    public Projectile projectile;
     private Animator anim;
+
+    public bool findPlayerWithoutRangeOfSight = false;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -34,10 +35,24 @@ public class EnemyController : DamagableObject
     }
 
 
+    protected void FireProjectileTowardsPlayer(float height = 1.0f)
+    {
 
+        var start = transform.position;
+        start.y = height;
+        Vector3 direction = (player.gameObject.transform.position - start).normalized;
+        
+        var position = transform.position;
+        position += direction * 1.1f;
+        position.y = height;
+        Projectile clone = Instantiate(projectile, new Vector3(position.x, position.y, position.z),
+            Quaternion.LookRotation(direction, Vector3.up));
+        clone.ownerTag = tag;
+        Debug.Log($"ownertag {clone.ownerTag}");
+    }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         if (dead == true)
         {
@@ -59,7 +74,7 @@ public class EnemyController : DamagableObject
 
         if (distance <= navAgent.stoppingDistance + 0.3)
         {
-            FaceTarget();
+            FacePlayer();
             if (attackTimer <= 0)
             {
                 attackTimer = attackCooldown;
@@ -72,7 +87,7 @@ public class EnemyController : DamagableObject
 
             }
         }
-        else // Not within range, 
+        else // Not within combat range, 
         {
             anim.SetFloat("Speed_f", navAgent.velocity.magnitude);
             var direction = (player.transform.position - transform.position).normalized;
@@ -84,21 +99,18 @@ public class EnemyController : DamagableObject
 
             int ignoreLayer = ~((1 << treasureLayer) | (1 << EnemyLayer));
 
-            if (Physics.Raycast(ray, out var hitInfo, 100, ignoreLayer))
+            
+            if(findPlayerWithoutRangeOfSight == true || 
+               Physics.Raycast(ray, out RaycastHit hitInfo, detectPlayerRadius, ignoreLayer) && hitInfo.collider.gameObject.tag == "Player")
             {
-                //if (distance <= detectPlayerRadius)
-                if (hitInfo.collider.gameObject.tag == "Player")
-                {
-                    navAgent.SetDestination(player.transform.position);
-                }
-                
+                navAgent.SetDestination(player.transform.position);
             }
         }
     }
 
 
 
-    private void FaceTarget()
+    protected void FacePlayer()
     {
         Vector3 direction = (player.transform.position - transform.position).normalized;
         Quaternion lookDirection = Quaternion.LookRotation((new Vector3(direction.x, 0, direction.z)));
