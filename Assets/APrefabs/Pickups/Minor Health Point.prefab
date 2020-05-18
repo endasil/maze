@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 2297705857513727482}
   m_Layer: 0
   m_Name: Minor Health Point
-  m_TagString: Untagged
+  m_TagString: Treasure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -8,7 +8,7 @@ public class Door : MonoBehaviour
     public Transform leftDoor;
     public Transform rightDoor;
 
-    private AudioClip openSound;
+    public AudioClip openSound;
     // Start is called before the first frame update
     void Start()
     {

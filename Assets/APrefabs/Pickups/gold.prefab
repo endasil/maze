@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 1281962669}
   m_Layer: 11
   m_Name: gold
-  m_TagString: Untagged
+  m_TagString: Treasure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -231,3 +231,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupSound: {fileID: 8300000, guid: 69ea4da74033ae446a0f3d79a2dd9df4, type: 3}
+  goldValue: 1

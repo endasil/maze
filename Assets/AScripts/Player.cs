@@ -29,8 +29,7 @@ public class Player : DamagableObject
     public AudioClip projectileSound;
     public AudioClip noKey;
     public AudioClip noMoney;
-    public List<AudioClip> hitSounds;
-    private AudioSource audio;
+    private AudioSource audioSource;
 
     
     [Header("Init Configs")]
@@ -48,10 +47,6 @@ public class Player : DamagableObject
     public Transform wallToRepeat;
     public Transform wallParent;
     public GameObject floor;
-    public Interactable focus;
-
-    public float nextHitSoundTime;
-    public float hitSoundRepeatDelay = 1;
     private float attackTimer = 0;
 
     // Start is called before the first frame update
@@ -59,7 +54,7 @@ public class Player : DamagableObject
     {
         nextHitSoundTime = Time.time + hitSoundRepeatDelay;
         base.Start();
-        audio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         navAgent = GetComponent<NavMeshAgent>();
         var save = SaveData.instance;
         save.LoadPlayer(this);
@@ -95,7 +90,7 @@ public class Player : DamagableObject
         //}
     }
 
-    public void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
 
@@ -104,7 +99,7 @@ public class Player : DamagableObject
         {
             nextHitSoundTime = Time.time + hitSoundRepeatDelay;
             var soundToPlay = Random.Range(0, hitSounds.Count);
-            audio.PlayOneShot(hitSounds[soundToPlay], 0.2f);
+            audioSource.PlayOneShot(hitSounds[soundToPlay], 0.2f);
         }
 
     }
@@ -146,7 +141,7 @@ public class Player : DamagableObject
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookDirection, Time.deltaTime * 80);
 
 
-                audio.PlayOneShot(projectileSound, 0.02f);
+                audioSource.PlayOneShot(projectileSound, 0.02f);
                 AudioSource.PlayClipAtPoint(projectileSound, transform.position, 0.02f);
                 GameObject clone = Instantiate(ProjectileTypes[weaponLevel].gameObject, new Vector3(position.x, position.y, position.z),
                     Quaternion.LookRotation(direction, Vector3.up)) as GameObject;
@@ -155,19 +150,6 @@ public class Player : DamagableObject
             }
         }
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out var hitInfo, 100))
-            {
-                Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
-                if (interactable != null)
-                {
-                    SetFocus(interactable);
-                }
-            }
-        }
     }
 
 
@@ -195,11 +177,7 @@ public class Player : DamagableObject
         return false;
     }
 
-    private void SetFocus(Interactable newFocus)
-    {
-        focus = newFocus;
-    }
-
+    
     public void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Ground")

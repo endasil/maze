@@ -7,11 +7,15 @@ public class DamagableObject : MonoBehaviour
     [Header("Stats")]
     public int maxHealth = 100;
     public int hp = 300;
+
     [Header("Audio")]
     public List<AudioClip> hitSounds;
+    [SerializeField]
+    protected AudioClip deathSound;
+    
+    [Header("Init Configs")]
     protected float nextHitSoundTime = 1.0f;
     protected float hitSoundRepeatDelay = 1;
-    [Header("Init Configs")]
     private List<Color> originalColors = new List<Color>();
     [SerializeField]
     protected bool dead = false;
@@ -82,6 +86,7 @@ public class DamagableObject : MonoBehaviour
         StartCoroutine(FlashObject(Color.red, 0.5f, .07f));
         if (hp <= 0)
         {
+            hp = 0;
             dead = true;
             Die();
         }

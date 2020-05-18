@@ -24,20 +24,19 @@ public class Boss1 : EnemyController
     private float timeToKeepSummoning = 13.0f;
     private GameObject summonSpell;
     private Transform summonHolder;
-    private int skeletonsToSummon = 10;
+    private int skeletonsToSummon = 9;
     private readonly List<Vector3> summonPos = new List<Vector3>()
     {
-        new Vector3(40, 0.5f, 27),
-        new Vector3(-2, 0.5f, 27),
-        new Vector3(-42, 0.5f, 27)
+        new Vector3(35, 0.5f, 23),
+        new Vector3(-2, 0.5f, 23),
+        new Vector3(-37, 0.5f, 23)
 
     };
 
     [SerializeField]
     private EnemyController enemyTypeToSpawn;
-    private Animator anim;
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
         base.Start();
         summonSpell = transform.Find("SummonSpell").gameObject;
@@ -47,6 +46,8 @@ public class Boss1 : EnemyController
         ActivateSummonState();
         nextActionTime = Time.time + 5;
         transform.position = summonPos[1];
+        //transform.LookAt(player.gameObject.transform);
+
 
     }
 
@@ -63,6 +64,7 @@ public class Boss1 : EnemyController
         nextActionTime = Time.time + timeToKeepSummoning;
         combatState = CombatState.Summon;
         AudioSource.PlayClipAtPoint(startSummonSound, transform.position,1.0f);
+        transform.forward = Vector3.forward;
 
     }
 
@@ -77,8 +79,11 @@ public class Boss1 : EnemyController
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
+
+        if(dead)
+            return;
 
         if (Time.time > nextActionTime )
         {

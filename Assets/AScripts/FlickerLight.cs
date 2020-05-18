@@ -8,7 +8,7 @@ public class FlickerLight : MonoBehaviour
     public int seedOffset;
     void Start()
     {
-        seedOffset = Random.Range(1, 200);
+        seedOffset = Random.Range(1, 999999);
         Light light = GetComponent<Light>();
         light.type = LightType.Point;
         light.shadows = LightShadows.Soft;

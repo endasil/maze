@@ -34,7 +34,8 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == ownerTag || other.tag == "Ground")
+        Debug.Log("OnTriggerEnter" + other.tag);
+        if (other.tag == ownerTag || other.tag == "Ground" || other.tag == "Treasure" || other.gameObject.layer == 2)
         {
             return;
         }
@@ -45,6 +46,7 @@ public class Projectile : MonoBehaviour
             damagable.TakeDamage(power);
 
         }
+        Debug.Log("Projectile destroyed by " + other.tag);
         //if (other.tag == "Wall")
         //{
             Destroy(gameObject);

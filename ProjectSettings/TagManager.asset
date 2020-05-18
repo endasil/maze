@@ -10,6 +10,7 @@ TagManager:
   - PlayerProjectile
   - Boss1
   - Floor
+  - Treasure
   layers:
   - Default
   - TransparentFX

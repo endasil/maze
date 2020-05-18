@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 383862203584130346}
   m_Layer: 0
   m_Name: Minor Healing Bottle
-  m_TagString: Untagged
+  m_TagString: Treasure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,6 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 25
+  pickupSound: {fileID: 0}
 --- !u!65 &383862203584130346
 BoxCollider:
   m_ObjectHideFlags: 0
