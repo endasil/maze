@@ -20,12 +20,18 @@ public class EnemyController : DamagableObject
     protected Animator anim;
     private int ignoreLayer;
 
+    [SerializeField]
+    private Vector3 navAgentDestination;
+    public float timeAsACorpse = 5;
     // Test
     public bool findPlayerWithoutRangeOfSight = false;
+    public bool alwaysVisible = false;
+    public bool foundPlayer = false;
     // Start is called before the first frame update
-    protected override void Start()
+
+    protected void Start()
     {
-        base.Start();
+
         attackTimer = attackCooldown;
         navAgent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>();
@@ -36,6 +42,15 @@ public class EnemyController : DamagableObject
             (1 << LayerMask.NameToLayer("Enemy")));
         //        ignoreLayer = ~(1 << LayerMask.NameToLayer("Enemy")); // ignore collisions with layerX
 
+
+        if (!alwaysVisible)
+        {
+            foreach (var r in rendererList)
+            {
+                r.enabled = false;
+
+            }
+        }
     }
 
 
@@ -98,10 +113,28 @@ public class EnemyController : DamagableObject
             var direction = (player.transform.position - transform.position).normalized;
             Ray ray = new Ray(transform.position + direction, direction);
 
-            if (findPlayerWithoutRangeOfSight == true ||
-               Physics.Raycast(ray, out RaycastHit hitInfo, detectPlayerRadius, ignoreLayer) && hitInfo.collider.gameObject.tag == "Player")
+            if (findPlayerWithoutRangeOfSight == true)
             {
                 navAgent.SetDestination(player.transform.position);
+            }
+            else if (Physics.Raycast(ray, out RaycastHit hitInfo, detectPlayerRadius, ignoreLayer) && hitInfo.collider.gameObject.tag == "Player")
+            {
+                if (!foundPlayer)
+                {
+                    foundPlayer = true;
+                    foreach (var r in rendererList)
+                    {
+
+                        r.enabled = true;
+                        
+
+                    }
+                }
+
+                bool okDesiDestination = navAgent.SetDestination(player.transform.position);
+                Debug.Log(
+                    $"Navmesh destination is object {hitInfo.transform.gameObject.name} result is {okDesiDestination} position of target is {navAgent.destination}");
+
             }
         }
     }
@@ -124,15 +157,11 @@ public class EnemyController : DamagableObject
             var direction = (player.transform.position - transform.position).normalized;
             Ray ray = new Ray(transform.position + direction, direction);
             Physics.Raycast(ray, out RaycastHit hitInfo, detectPlayerRadius, ignoreLayer);
-            
             Gizmos.DrawLine(transform.position, hitInfo.point);
-            Debug.Log(player.transform.position);
-            Debug.Log(
-                $"Raycast from {gameObject.name} hitting {hitInfo.transform.gameObject.name} Line to player at " +
-                player.transform.position);
+            Debug.Log($"Raycasting collides with ${hitInfo.transform.gameObject}");
         }
 
-        
+
         Gizmos.color = Color.blue;
         if (navAgent)
         {
@@ -153,7 +182,7 @@ public class EnemyController : DamagableObject
         Debug.Log("Dying..");
         Destroy(GetComponent<BoxCollider>());
         Destroy(navAgent);
-        Destroy(gameObject, 5);
+        Destroy(gameObject, timeAsACorpse);
 
     }
 

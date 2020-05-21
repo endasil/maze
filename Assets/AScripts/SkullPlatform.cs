@@ -13,7 +13,6 @@ public class SkullPlatform : MonoBehaviour
     [SerializeField]
     private List<GameObject> objectsToActivate;
 
-    public GameObject exitStone;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,8 +36,7 @@ public class SkullPlatform : MonoBehaviour
             {
                 o.SetActive(true);
             }
-            AudioSource.PlayClipAtPoint(activationSound, exitStone.transform.position);
-            exitStone.SetActive(false);
+            AudioSource.PlayClipAtPoint(activationSound, transform.position);
         }
     }
 }

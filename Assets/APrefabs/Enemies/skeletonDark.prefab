@@ -539,18 +539,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 40
   hp: 40
-  renderer: {fileID: 13700000}
+  hitSounds: []
+  deathSound: {fileID: 8300000, guid: 0cf5eb26fd56e494e9036631432e80e7, type: 3}
   dead: 0
   detectPlayerRadius: 20.77
-  continueChasePlayerRadius: 20
-  deathSound: {fileID: 8300000, guid: 0cf5eb26fd56e494e9036631432e80e7, type: 3}
-  rotationSpeed: 5
-  chasing: 0
+  facePlayerSpeed: 5
   attackPower: 7
   attackCooldown: 1
-  ignoredLayers:
-    serializedVersion: 2
-    m_Bits: 3072
+  projectile: {fileID: 0}
+  navAgentDestination: {x: 0, y: 0, z: 0}
+  timeAsACorpse: 5
+  findPlayerWithoutRangeOfSight: 0
+  alwaysVisible: 0
+  foundPlayer: 0
 --- !u!65 &1499665481
 BoxCollider:
   m_ObjectHideFlags: 0

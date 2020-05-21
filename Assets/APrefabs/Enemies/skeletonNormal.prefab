@@ -250,7 +250,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   hp: 10
-  hitSounds: []
+  hitSounds:
+  - {fileID: 8300000, guid: 66e1d8e05fd1610418d421f0ee1100d7, type: 3}
   deathSound: {fileID: 8300000, guid: 66e1d8e05fd1610418d421f0ee1100d7, type: 3}
   dead: 0
   detectPlayerRadius: 20.77
@@ -258,7 +259,10 @@ MonoBehaviour:
   attackPower: 3
   attackCooldown: 1
   projectile: {fileID: 0}
+  navAgentDestination: {x: 0, y: 0, z: 0}
+  timeAsACorpse: 5
   findPlayerWithoutRangeOfSight: 0
+  foundPlayer: 0
 --- !u!195 &521004671
 NavMeshAgent:
   m_ObjectHideFlags: 0

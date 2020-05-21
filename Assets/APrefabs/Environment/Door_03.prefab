@@ -347,3 +347,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftDoor: {fileID: 2671609389228665336}
   rightDoor: {fileID: 2671534872980245212}
+  openSound: {fileID: 8300000, guid: 85e38fa68ea5e9e4c9d9533620f16391, type: 3}

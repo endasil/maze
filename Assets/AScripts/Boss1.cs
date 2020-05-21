@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Boss1 : EnemyController
 {
@@ -18,13 +20,13 @@ public class Boss1 : EnemyController
 
     [Header("Other")]
     private CombatState combatState = CombatState.Summon;
-    private float rotSpeed = 0.01f;
     private float nextActionTime = 0;
-    private float timeBetweenTeleportations = 1f;
-    private float timeToKeepSummoning = 13.0f;
+    private float timeBetweenTeleportations = 1.1f;
+    private float timeToKeepSummoning = 12.0f;
     private GameObject summonSpell;
     private Transform summonHolder;
-    private int skeletonsToSummon = 9;
+    private int skeletonsToSummon = 8;
+    public OnActivatedEvent callWhenDead;
     private readonly List<Vector3> summonPos = new List<Vector3>()
     {
         new Vector3(35, 0.5f, 23),
@@ -32,6 +34,9 @@ public class Boss1 : EnemyController
         new Vector3(-37, 0.5f, 23)
 
     };
+
+    Vector3 minPositions = new Vector3(-40, 0.5f, 1);
+    Vector3 maxPositions = new Vector3(60, 0.5f, 23);
 
     [SerializeField]
     private EnemyController enemyTypeToSpawn;
@@ -46,7 +51,6 @@ public class Boss1 : EnemyController
         ActivateSummonState();
         nextActionTime = Time.time + 5;
         transform.position = summonPos[1];
-        //transform.LookAt(player.gameObject.transform);
 
 
     }
@@ -55,6 +59,7 @@ public class Boss1 : EnemyController
     {
         int graveNr = Random.Range(0, 3);
         transform.position = summonPos[graveNr];
+        Debug.Log($"Grave teleport to {transform.position}");
     }
     public void ActivateSummonState()
     {
@@ -85,6 +90,13 @@ public class Boss1 : EnemyController
         if(dead)
             return;
 
+        if (transform.position.z > maxPositions.z || transform.position.z < minPositions.z || transform.position.x > maxPositions.x|| transform.position.x < minPositions.x)
+        {
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, minPositions.x, maxPositions.z), transform.position.y, Mathf.Clamp(transform.position.z, minPositions.z, maxPositions.z));
+            transform.LookAt(player.gameObject.transform);
+            Debug.Log("Clamp");
+
+        }
         if (Time.time > nextActionTime )
         {
             
@@ -123,8 +135,17 @@ public class Boss1 : EnemyController
         {
             EnemyController clone = Instantiate(enemyTypeToSpawn, new Vector3(position.x+skeletonNr, position.y, position.z),
                 Quaternion.identity, summonHolder);
+            clone.timeAsACorpse = 1.5f;
+            clone.alwaysVisible = true;
             clone.findPlayerWithoutRangeOfSight = true;
         }
+    }
+
+    public override void Die()
+    {
+        callWhenDead.Invoke(this.gameObject);
+        summonSpell.SetActive(false);
+        base.Die();
     }
 
     IEnumerator Teleport()
@@ -133,6 +154,7 @@ public class Boss1 : EnemyController
         transform.position = player.gameObject.transform.position + Vector3.forward * 21;
         transform.RotateAround(player.transform.position, Vector3.up, angle);
         transform.position.Set(transform.position.x, 3, transform.position.z);
+        Debug.Log($"Rotational teleport to {transform.position}");
         transform.LookAt(player.gameObject.transform);
         yield return new WaitForSeconds(timeBetweenTeleportations / 4);
         FireProjectileTowardsPlayer(3);

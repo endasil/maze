@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     public float range = 10;
     
     public AudioClip wallImpact;
+    public AudioClip damagableImpact;
     [SerializeField]
     private Vector3 startPosition;
 
@@ -39,14 +40,27 @@ public class Projectile : MonoBehaviour
         {
             return;
         }
-        AudioSource.PlayClipAtPoint(wallImpact, transform.position);
+        
         var damagable = other.gameObject.GetComponent<DamagableObject>();
+        
+        
         if (damagable)
         {
-            damagable.TakeDamage(power);
+            
 
+            // Play a default sound when hitting something that can be damaged to ensure there is always
+            // feedback sound even if there is nothing specific for the object.
+            if (damagable.hitSounds.Count == 0)
+            {
+                AudioSource.PlayClipAtPoint(damagableImpact, transform.position);
+            }
+            damagable.TakeDamage(power);
         }
-        Debug.Log("Projectile destroyed by " + other.tag);
+        else
+        {
+            AudioSource.PlayClipAtPoint(wallImpact, transform.position);
+        }
+        Debug.Log("Projectile destroyed by " + other.name);
         //if (other.tag == "Wall")
         //{
             Destroy(gameObject);

@@ -1,3 +1,35 @@
+Release 11:
+
+Made boss work
+replaced door at end of level 2 for consistency. Same door before all exits.
+
+Fixed incorrect layer on some enemies causing them to block sight from each other 
+(enemy could not find player because another enemy was standing in front of it).
+
+Converted a bunch of sounds to mono to make it possible for unity to position the sound
+in the world and reduce size.
+
+Fixed an issue with Level 2 not beeing possible to complete if you took the path with the gold
+due to lack of a key. The door is now replaced by a metal bar that is opened without key with a
+trigger.
+
+First step towards fog of war. Enemies will only become visible once they are within sight range.
+This makes the game a little bit harder.
+
+Fixed a number of doors that the player could go trough without shooting or using key to open.
+
+Added sound for opening doors.
+
+Added different sound when projectiles hit a damagable object to make it more obvious that the
+player is shooting at something that can be destroyed.
+
+Rebuilt the exit area of level 2 so that the platform works as a teleport that takes the 
+player to the boss level instead of opening the door to the exit.
+
+Fixing an issue where only part of the larger skeletons would flash red when hit. Now the
+code will find all renderes in children instead of only the first one,.
+
+
 
 14/5 fixed so that the hit damagableObject script find all renderers of an object
 

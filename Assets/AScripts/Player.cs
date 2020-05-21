@@ -50,10 +50,9 @@ public class Player : DamagableObject
     private float attackTimer = 0;
 
     // Start is called before the first frame update
-    protected override void Start()
+    protected void Start()
     {
         nextHitSoundTime = Time.time + hitSoundRepeatDelay;
-        base.Start();
         audioSource = GetComponent<AudioSource>();
         navAgent = GetComponent<NavMeshAgent>();
         var save = SaveData.instance;

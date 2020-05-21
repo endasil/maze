@@ -35,9 +35,16 @@ public class GameManager : Singleton<GameManager>
     {
         statsText.SetText($"{player.Keys} Gold: {player.gold}");
         healthBar.size = (float)player.hp / player.maxHealth;
+        
+        
         if (bossHealthBar)
         {
             bossHealthBar.size = (float)boss.hp / boss.maxHealth;
+            if (boss.hp <= 0)
+            {
+                Destroy(bossHealthBar.gameObject);
+            }
+            
         }
     }
 }

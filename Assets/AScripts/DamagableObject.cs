@@ -11,7 +11,7 @@ public class DamagableObject : MonoBehaviour
     [Header("Audio")]
     public List<AudioClip> hitSounds;
     [SerializeField]
-    protected AudioClip deathSound;
+    public AudioClip deathSound;
     
     [Header("Init Configs")]
     protected float nextHitSoundTime = 1.0f;
@@ -20,8 +20,8 @@ public class DamagableObject : MonoBehaviour
     [SerializeField]
     protected bool dead = false;
 
-    List<Renderer> rendererList = new List<Renderer>();
-    void GetRenderers()
+    protected List<Renderer> rendererList = new List<Renderer>();
+    protected void GetRenderers()
     {
         foreach (Renderer objectRenderer in gameObject.GetComponentsInChildren<Renderer>())
         {
@@ -37,8 +37,7 @@ public class DamagableObject : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         GetRenderers();
         nextHitSoundTime = Time.time + hitSoundRepeatDelay;

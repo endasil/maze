@@ -57,10 +57,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 972384412925dc24d94e47e1339fea19, type: 2}
+  - {fileID: 2100000, guid: 301c477facae0b44cbb76378c33ea079, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -68,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -105,8 +107,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae8f1142c27d3b84bbe41f44140dc6d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookRadius: 14.3
-  rotationSpeed: 5
+  maxHealth: 100
+  hp: 300
+  hitSounds: []
+  deathSound: {fileID: 0}
+  dead: 0
+  detectPlayerRadius: 100
+  facePlayerSpeed: 5
+  attackPower: 1
+  attackCooldown: 1
+  projectile: {fileID: 0}
+  findPlayerWithoutRangeOfSight: 0
 --- !u!195 &3846558125419542625
 NavMeshAgent:
   m_ObjectHideFlags: 0
