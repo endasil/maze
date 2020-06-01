@@ -2,7 +2,7 @@
 
 public class PlayerCamera : MonoBehaviour
 {
-    public GameObject Player;
+    public GameObject Player;   
     public float OffsetX = -35;
     public float OffsetZ = -40;
     public float OffsetY = 30;

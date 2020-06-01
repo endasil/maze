@@ -8,9 +8,9 @@ TagManager:
   - DamagableObject
   - Ground
   - PlayerProjectile
-  - Boss1
   - Floor
   - Treasure
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -24,7 +24,7 @@ TagManager:
   - Ground
   - Enemy
   - Treasure
-  - 
+  - FogOfWar
   - 
   - 
   - 

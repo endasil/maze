@@ -1,7 +1,35 @@
+Release 12
+31 /5 
+Made the visibility range of monsters different than aggro range. You can see monsters before
+getting close enough for them to attack.
+Added fps counter, can be turned off with f.
+
+Fixed issue with door before the exit on level 2 getting openened when the entrance to 
+graveyard was opened.
+Some performance optimizations.
+Fixed missing walls on level 1.
+Fixed an issue where the weapon level up on level 2 could be visible even when you had that update.
+
+
+23 /5 Added a new tick function that is called twice per second. Moved the update of 
+hp, gold, keys etc in GameManager from updating every frame to updating twice per second.
+Did the same with some functions on the player and enemy.
+
+22/5 
+
+Added simple fog of war with the help of cubes
+
+
 Release 11:
 
-Made boss work
-replaced door at end of level 2 for consistency. Same door before all exits.
+Added boss. Please try it out and give me feedback on it!
+First step towards "fog of war". Enemies will only become visible once they possible to see. 
+In practice this means that if a line can be drawn from the enemy to the player within the range 
+the enemy can see. Will be changed in the future to have visibility range and attack range to be 
+two different things so you can see enemies in an open room. This change hopfully contributes a 
+bit to making the game a bit more creepy to explore.
+
+Replaced door at end of level 2 for consistency. Same door before all exits.
 
 Fixed incorrect layer on some enemies causing them to block sight from each other 
 (enemy could not find player because another enemy was standing in front of it).
@@ -13,8 +41,6 @@ Fixed an issue with Level 2 not beeing possible to complete if you took the path
 due to lack of a key. The door is now replaced by a metal bar that is opened without key with a
 trigger.
 
-First step towards fog of war. Enemies will only become visible once they are within sight range.
-This makes the game a little bit harder.
 
 Fixed a number of doors that the player could go trough without shooting or using key to open.
 
@@ -27,7 +53,9 @@ Rebuilt the exit area of level 2 so that the platform works as a teleport that t
 player to the boss level instead of opening the door to the exit.
 
 Fixing an issue where only part of the larger skeletons would flash red when hit. Now the
-code will find all renderes in children instead of only the first one,.
+code will find all renderes in children instead of only the first one.
+
+Fixed light that was had ran away from it's torch....
 
 
 

@@ -23,11 +23,6 @@ public class Exit : MonoBehaviour
         save = FindObjectOfType<SaveData>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")

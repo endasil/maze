@@ -109,7 +109,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 15
   hp: 15
-  renderer: {fileID: 5018828607229968898}
+  hitSounds: []
+  deathSound: {fileID: 0}
   dead: 0
 --- !u!208 &5018828607229969148
 NavMeshObstacle:
@@ -236,7 +237,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 15
   hp: 15
-  renderer: {fileID: 5018828607466616994}
+  hitSounds: []
+  deathSound: {fileID: 0}
   dead: 0
 --- !u!208 &5018828607466616988
 NavMeshObstacle:
@@ -363,7 +365,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 15
   hp: 15
-  renderer: {fileID: 5018828607796303330}
+  hitSounds: []
+  deathSound: {fileID: 0}
   dead: 0
 --- !u!208 &5018828607796303324
 NavMeshObstacle:
@@ -490,7 +493,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 15
   hp: 15
-  renderer: {fileID: 5018828607839652950}
+  hitSounds: []
+  deathSound: {fileID: 0}
   dead: 0
 --- !u!208 &5018828607839652944
 NavMeshObstacle:
@@ -654,7 +658,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 15
   hp: 15
-  renderer: {fileID: 5018828608173297580}
+  hitSounds: []
+  deathSound: {fileID: 0}
   dead: 0
 --- !u!208 &5018828608173297582
 NavMeshObstacle:
@@ -781,7 +786,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 15
   hp: 15
-  renderer: {fileID: 5018828609285360683}
+  hitSounds: []
+  deathSound: {fileID: 0}
   dead: 0
 --- !u!208 &5018828609285360677
 NavMeshObstacle:
@@ -865,6 +871,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Damaged_Bars_01(Clone) (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101156451858861927, guid: ac634a0d25ca0c240adc79b30b32a9d6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac634a0d25ca0c240adc79b30b32a9d6, type: 3}

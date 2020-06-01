@@ -50,15 +50,6 @@ public class DamagableObject : MonoBehaviour
 
     }
 
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public virtual bool Heal(int health)
     {
         if (hp >= maxHealth)

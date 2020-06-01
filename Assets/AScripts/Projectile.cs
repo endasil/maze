@@ -35,15 +35,13 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter" + other.tag);
         if (other.tag == ownerTag || other.tag == "Ground" || other.tag == "Treasure" || other.gameObject.layer == 2)
         {
             return;
         }
-        
-        var damagable = other.gameObject.GetComponent<DamagableObject>();
-        
-        
+
+        DamagableObject damagable = other.gameObject.GetComponent<DamagableObject>();
+
         if (damagable)
         {
             
@@ -60,7 +58,7 @@ public class Projectile : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(wallImpact, transform.position);
         }
-        Debug.Log("Projectile destroyed by " + other.name);
+        //Debug.Log("Projectile destroyed by " + other.name);
         //if (other.tag == "Wall")
         //{
             Destroy(gameObject);

@@ -5,10 +5,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : DamagableObject
 {
-    public float detectPlayerRadius = 100.0f;
+    public float aggroRange = 100.0f;
     protected Player player;
 
     protected NavMeshAgent navAgent;
@@ -19,14 +18,17 @@ public class EnemyController : DamagableObject
     public Projectile projectile;
     protected Animator anim;
     private int ignoreLayer;
-
+    [SerializeField]
+    private float visibleRange = 40f;
     [SerializeField]
     private Vector3 navAgentDestination;
     public float timeAsACorpse = 5;
     // Test
     public bool findPlayerWithoutRangeOfSight = false;
     public bool alwaysVisible = false;
-    public bool foundPlayer = false;
+    public bool hasBeenSeen = false;
+
+    private float distanceToPlayer;
     // Start is called before the first frame update
 
     protected void Start()
@@ -42,7 +44,7 @@ public class EnemyController : DamagableObject
             (1 << LayerMask.NameToLayer("Enemy")));
         //        ignoreLayer = ~(1 << LayerMask.NameToLayer("Enemy")); // ignore collisions with layerX
 
-
+        InvokeRepeating("Tick", 0, 0.5f);
         if (!alwaysVisible)
         {
             foreach (var r in rendererList)
@@ -67,73 +69,70 @@ public class EnemyController : DamagableObject
         Projectile clone = Instantiate(projectile, new Vector3(position.x, position.y, position.z),
             Quaternion.LookRotation(direction, Vector3.up));
         clone.ownerTag = tag;
-        Debug.Log($"ownertag {clone.ownerTag}");
     }
+
+
+    // Update called twice per second. For things that are less time sensitive
+    void Tick()
+    {
+        if(dead)
+            return;
+
+        // If this agent should find the player on the level regardless of distance and walls
+        if (findPlayerWithoutRangeOfSight == true)
+        {
+            navAgent.SetDestination(player.transform.position);
+        }
+
+        var directionToPlayer = (player.transform.position - transform.position).normalized;
+        if (distanceToPlayer < visibleRange && Physics.Raycast(new Ray(transform.position + directionToPlayer, directionToPlayer),
+                out var hitInfo, visibleRange, ignoreLayer) && hitInfo.collider.gameObject.tag == "Player")
+        {
+            // Enable rendering of this enemy the first time the player sees it.
+            if (!hasBeenSeen)
+            {
+                hasBeenSeen = true;
+                foreach (var r in rendererList)
+                {
+                    r.enabled = true;
+                }
+            }
+
+            // Not within melee range but the player can be seen by the enemy and within aggroRange 
+            if (distanceToPlayer <= aggroRange && distanceToPlayer > navAgent.stoppingDistance + 1 )
+            {
+                anim.SetFloat("Speed_f", navAgent.velocity.magnitude);
+                navAgent.SetDestination(player.transform.position);
+            }
+
+        }
+    }
+
 
     // Update is called once per frame
     protected void Update()
     {
         if (dead == true)
-        {
             return;
-        }
 
-        float distance = Vector3.Distance(player.transform.position, transform.position);
+        distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
 
 
         attackTimer -= Time.deltaTime;
 
-
-        if (distance <= navAgent.stoppingDistance + 1 && attackTimer <= 0)
+        if (distanceToPlayer <= navAgent.stoppingDistance + 1 && attackTimer <= 0)
         {
-            //anim.SetFloat("Speed_f", 0);
             anim.SetTrigger("Attack_t");
-            //Debug.Log("Starting attack Anim" + gameObject.name);
         }
 
-        if (distance <= navAgent.stoppingDistance + 0.3)
+        if (distanceToPlayer <= navAgent.stoppingDistance + 0.3)
         {
             FacePlayer();
             if (attackTimer <= 0)
             {
                 attackTimer = attackCooldown;
-                Debug.Log($"{this.name} attacking player for {attackPower} damage. attackTimer {attackTimer}");
-
-                // Set this to 0 to avoid going to run anim
-                //anim.SetFloat("Speed_f", 0);
-                //anim.SetTrigger("Attack_t");
+                //Debug.Log($"{this.name} attacking player for {attackPower} damage. attackTimer {attackTimer}");
                 player.TakeDamage(attackPower);
-
-            }
-        }
-        else  // Not within combat range, 
-        {
-            anim.SetFloat("Speed_f", navAgent.velocity.magnitude);
-
-            var direction = (player.transform.position - transform.position).normalized;
-            Ray ray = new Ray(transform.position + direction, direction);
-
-            if (findPlayerWithoutRangeOfSight == true)
-            {
-                navAgent.SetDestination(player.transform.position);
-            }
-            else if (Physics.Raycast(ray, out RaycastHit hitInfo, detectPlayerRadius, ignoreLayer) && hitInfo.collider.gameObject.tag == "Player")
-            {
-                if (!foundPlayer)
-                {
-                    foundPlayer = true;
-                    foreach (var r in rendererList)
-                    {
-
-                        r.enabled = true;
-                        
-
-                    }
-                }
-
-                bool okDesiDestination = navAgent.SetDestination(player.transform.position);
-                Debug.Log(
-                    $"Navmesh destination is object {hitInfo.transform.gameObject.name} result is {okDesiDestination} position of target is {navAgent.destination}");
 
             }
         }
@@ -151,18 +150,22 @@ public class EnemyController : DamagableObject
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectPlayerRadius);
+        Gizmos.DrawWireSphere(transform.position, aggroRange);
         if (player)
         {
             var direction = (player.transform.position - transform.position).normalized;
             Ray ray = new Ray(transform.position + direction, direction);
-            Physics.Raycast(ray, out RaycastHit hitInfo, detectPlayerRadius, ignoreLayer);
+            Physics.Raycast(ray, out RaycastHit hitInfo, visibleRange, ignoreLayer);
             Gizmos.DrawLine(transform.position, hitInfo.point);
-            Debug.Log($"Raycasting collides with ${hitInfo.transform.gameObject}");
+            //if (hitInfo.transform)
+            //{
+            //    Debug.Log($"Raycasting collides with ${hitInfo.transform.gameObject}");
+            //}
         }
 
 
         Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, visibleRange);
         if (navAgent)
         {
             Gizmos.DrawWireSphere(transform.position, navAgent.stoppingDistance);

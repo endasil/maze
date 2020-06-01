@@ -542,7 +542,7 @@ MonoBehaviour:
   hitSounds: []
   deathSound: {fileID: 8300000, guid: 0cf5eb26fd56e494e9036631432e80e7, type: 3}
   dead: 0
-  detectPlayerRadius: 20.77
+  detectPlayerRadius: 20
   facePlayerSpeed: 5
   attackPower: 7
   attackCooldown: 1

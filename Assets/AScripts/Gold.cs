@@ -13,21 +13,18 @@ public class Gold : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void OnTriggerEnter(Collider other)
     {
         
         // Todo make player object pick up instead
         if(other.gameObject.tag == "Player")
         {
-            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 
-            
+            if (pickupSound)
+            {
+                AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+            }
+
             var player = other.gameObject.GetComponent<Player>();
             player.GiveGold(goldValue);
             Destroy(gameObject);

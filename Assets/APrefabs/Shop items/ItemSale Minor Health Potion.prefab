@@ -258,6 +258,7 @@ MonoBehaviour:
     type: 3}
   displayItemOffset: {x: -0.5, y: 0, z: 2}
   statsText: {fileID: 2225631513580867193}
+  purchaseSound: {fileID: 8300000, guid: 5f0f7e54753d25047a786b76554c1b57, type: 3}
 --- !u!65 &2225631513612452351
 BoxCollider:
   m_ObjectHideFlags: 0

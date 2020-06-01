@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4597356096022583697}
-  - component: {fileID: 4597356096022583696}
   - component: {fileID: 4597356096022583698}
   - component: {fileID: 6991671084863644086}
   m_Layer: 0
@@ -34,25 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4597356096022583696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4597356096022583703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a21e357646acaaa45a089eb47b4b0555, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  price: 35
-  shopDisplayItem: {fileID: 7106612745821145670, guid: 7ba72e12cc2bc114297891d9ebd40f92,
-    type: 3}
-  itemOnSale: {fileID: 5537868287196937685, guid: bf386fa6a3d28524eb77f646ed9d0339,
-    type: 3}
-  displayItemOffset: {x: -0.5, y: 0.5, z: 2}
-  statsText: {fileID: 4597356096255497748}
 --- !u!65 &4597356096022583698
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78,6 +58,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22db012cc96e25b47929cd63749dca43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  price: 35
+  shopDisplayItem: {fileID: 7106612745821145670, guid: 7ba72e12cc2bc114297891d9ebd40f92,
+    type: 3}
+  itemOnSale: {fileID: 5537868287196937685, guid: bf386fa6a3d28524eb77f646ed9d0339,
+    type: 3}
+  displayItemOffset: {x: -0.5, y: 0.85, z: 2}
+  statsText: {fileID: 4597356096255497748}
+  purchaseSound: {fileID: 8300000, guid: 5f0f7e54753d25047a786b76554c1b57, type: 3}
   weaponLevel: 1
 --- !u!1 &4597356096255497770
 GameObject:

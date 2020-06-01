@@ -109,7 +109,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 20
   hp: 20
-  renderer: {fileID: 8101156451858861923}
+  hitSounds: []
+  deathSound: {fileID: 0}
   dead: 0
 --- !u!208 &8101156451858861917
 NavMeshObstacle:
