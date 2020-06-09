@@ -10,17 +10,17 @@ public class Exit : MonoBehaviour
 {
     
     private TextMeshPro textMesh;
-    private SaveData save;
+    private DataKeeper dataKeeper;
 
     [SerializeField]
     private string nextLevel = "Level2";
     private Player player;
-    // Start is called before the first frame update
+    
     void Start()
     {
         textMesh = GetComponent<TextMeshPro>();
         player = FindObjectOfType<Player>();
-        save = FindObjectOfType<SaveData>();
+        dataKeeper = FindObjectOfType<DataKeeper>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -31,13 +31,13 @@ public class Exit : MonoBehaviour
             eventData.Add("position", gameObject.transform.position);
             eventData.Add("timeOnLevel", Time.timeSinceLevelLoad);
             eventData.Add("timeSinceGameStart", Time.time);
-            eventData.Add("weaponLevel", player.weaponLevel);
+            eventData.Add("weaponLevel", player.GetWeaponLevel());
             AnalyticsEvent.LevelComplete(SceneManager.GetActiveScene().name, eventData);
                 
             if (!string.IsNullOrEmpty(nextLevel))
             {
                 textMesh.text = "";
-                save.SavePlayer(player.gold, player.GetWeaponLevel());
+                dataKeeper.SetPlayerStats(player);
                 SceneManager.LoadScene(nextLevel);
             }
             else

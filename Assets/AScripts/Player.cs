@@ -14,7 +14,7 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Player : DamagableObject
 {
-    public float attackCooldown = 1.0f;
+    
     
 
     [Header("Stats")]
@@ -22,11 +22,10 @@ public class Player : DamagableObject
     public int gold = 0;
     [SerializeField]
     public int Keys = 0;
-    [SerializeField] public int weaponLevel = 0;
-
-    public float fowForwardOffsetMultiplier = 2f;
-    public float fowRevealRadius = 15;
-
+    [SerializeField] 
+    private int weaponLevel = 0;
+    [SerializeField]
+    private float attackCooldown = 1.0f;
     [Header("Audio")]
     public AudioClip projectileSound;
     public AudioClip noKey;
@@ -43,14 +42,20 @@ public class Player : DamagableObject
     private LayerMask clickableLayer;
     [SerializeField]
     private List<Projectile> ProjectileTypes;
+    [SerializeField]
+    private float fowForwardOffsetMultiplier = 2f;
+    [SerializeField]
+    private float fowRevealRadius = 15;
 
     private float attackTimer = 0;
 
+    private CapsuleCollider playerCollider;
+
     void Awake()
     {
-        if (SaveData.instance)
+        if (DataKeeper.instance)
         {
-            SaveData.instance.LoadPlayer(this);
+            DataKeeper.instance.LoadPlayer(this);
         }
     }
     // Start is called before the first frame update
@@ -59,7 +64,7 @@ public class Player : DamagableObject
         nextHitSoundTime = Time.time + hitSoundRepeatDelay;
         audioSource = GetComponent<AudioSource>();
         navAgent = GetComponent<NavMeshAgent>();
-        
+        playerCollider = GetComponent<CapsuleCollider>();
         InvokeRepeating("Tick", 0, 0.5f);
     }
 
@@ -76,18 +81,14 @@ public class Player : DamagableObject
             i++;
         }
     }
-
-    // Called twice per second
+    
     void Tick()
     {
-
         // Remove the light that shows where the player is going when the player has stopped.
         if (navAgent.velocity.magnitude <= 0)
         {
             clickLight.transform.position = new Vector3(-200, 3, -200);
         }
-
-
     }
 
     // Update is called once per frame
@@ -124,7 +125,7 @@ public class Player : DamagableObject
                 
                 Quaternion lookDirection = Quaternion.LookRotation((new Vector3(direction.x, 0, direction.z)));
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookDirection, Time.deltaTime * 80);
-
+                
                 audioSource.PlayOneShot(projectileSound, 0.02f);
                 GameObject clone = Instantiate(ProjectileTypes[weaponLevel].gameObject, new Vector3(position.x, position.y, position.z),
                     Quaternion.LookRotation(direction, Vector3.up)) as GameObject;
@@ -219,12 +220,16 @@ public class Player : DamagableObject
         if (weaponLevel <= level)
         {
             weaponLevel = level;
-            return true;
+            return true; 
         }
 
         return false;
     }
 
-    
+
+    public int GetGold()
+    {
+        return gold;
+    }
 }
 

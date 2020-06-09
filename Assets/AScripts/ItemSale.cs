@@ -29,12 +29,6 @@ public class ItemSale : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void Tick()
     {
         statsText.SetText($"X {price}");

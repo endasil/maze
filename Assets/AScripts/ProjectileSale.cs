@@ -10,7 +10,7 @@ public class ProjectileSale : ItemSale
     public new void Start()
     {
         var player = FindObjectOfType<Player>();
-        if (player.weaponLevel >= weaponLevel)
+        if (player.GetWeaponLevel() >= weaponLevel)
         {
             gameObject.SetActive(false);
         }

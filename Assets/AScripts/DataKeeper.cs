@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveData : MonoBehaviour
+public class DataKeeper : MonoBehaviour
 {
 
-    public static SaveData instance;
+    public static DataKeeper instance;
     
     [SerializeField]
     private int gold;
     [SerializeField]
-    public int weaponLevel;
+    private int weaponLevel;
 
-    public void SavePlayer(int savegold, int saveWeaponLevel)
+    public void SetPlayerStats(Player player)
     {
-        gold = savegold;
-        weaponLevel = saveWeaponLevel;
+        gold = player.GetGold();
+        weaponLevel = player.GetWeaponLevel();
     }
 
     public void LoadPlayer(Player player)

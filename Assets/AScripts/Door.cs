@@ -5,23 +5,12 @@ using UnityEngine.AI;
 
 public class Door : MonoBehaviour
 {
-    public Transform leftDoor;
-    public Transform rightDoor;
-
-    public AudioClip openSound;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
+    [SerializeField]
+    private Transform leftDoor;
+    [SerializeField]
+    private Transform rightDoor;
+    [SerializeField]
+    private AudioClip openSound;
     
     void OnTriggerEnter(Collider other)
     {

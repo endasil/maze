@@ -15,7 +15,9 @@ public class Boss1 : EnemyController
     }
     
     [Header("Audio")]
+    [SerializeField]
     public AudioClip startSummonSound;
+    [SerializeField]
     public AudioClip endSummonSound;
 
     [Header("Other")]
@@ -24,9 +26,12 @@ public class Boss1 : EnemyController
     private float timeBetweenTeleportations = 1.1f;
     private float timeToKeepSummoning = 12.0f;
     private GameObject summonSpell;
+    [SerializeField]
     private Transform summonHolder;
+    [SerializeField]
     private int skeletonsToSummon = 8;
-    public OnActivatedEvent callWhenDead;
+    [SerializeField]
+    private OnActivatedEvent callWhenDead;
     private readonly List<Vector3> summonPos = new List<Vector3>()
     {
         new Vector3(35, 0.5f, 23),
@@ -51,8 +56,6 @@ public class Boss1 : EnemyController
         ActivateSummonState();
         nextActionTime = Time.time + 5;
         transform.position = summonPos[1];
-
-
     }
 
     public void TeleportToGrave()
@@ -70,7 +73,6 @@ public class Boss1 : EnemyController
         combatState = CombatState.Summon;
         AudioSource.PlayClipAtPoint(startSummonSound, transform.position,1.0f);
         transform.forward = Vector3.forward;
-
     }
 
     public void ActivateTeleportState()
@@ -80,13 +82,11 @@ public class Boss1 : EnemyController
         summonSpell.SetActive(false);
         nextActionTime = Time.time + timeBetweenTeleportations;
         combatState = CombatState.Teleport;
-
     }
 
     // Update is called once per frame
     new void Update()
     {
-
         if(dead)
             return;
 
@@ -99,7 +99,6 @@ public class Boss1 : EnemyController
         }
         if (Time.time > nextActionTime )
         {
-            
             if (combatState == CombatState.Teleport)
             {
                 nextActionTime = Time.time + timeBetweenTeleportations;
@@ -117,7 +116,6 @@ public class Boss1 : EnemyController
 
             else if (combatState == CombatState.Summon)
             {
-
                 // At the end of summon time, spawn the actual enemies
                 Summon(skeletonsToSummon);
                 ActivateTeleportState();
@@ -133,6 +131,7 @@ public class Boss1 : EnemyController
         AudioSource.PlayClipAtPoint(endSummonSound, transform.position,1.0f);
         for (int skeletonNr = 0; skeletonNr < nrOfSummons; skeletonNr++)
         {
+            // TODO: Fix pooling instead if instantiating new ones.
             EnemyController clone = Instantiate(enemyTypeToSpawn, new Vector3(position.x+skeletonNr, position.y, position.z),
                 Quaternion.identity, summonHolder);
             clone.timeAsACorpse = 1.5f;

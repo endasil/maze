@@ -11,29 +11,33 @@ public class EnemyController : DamagableObject
     protected Player player;
 
     protected NavMeshAgent navAgent;
-    public float facePlayerSpeed = 5.0f;
-    public int attackPower = 1;
-    public float attackCooldown = 1.0f;
+    
+    [SerializeField]
+    private int attackPower;
+    [SerializeField]
+    private float attackCooldown = 1.0f;
+    [SerializeField]
     private float attackTimer = 0;
-    public Projectile projectile;
+    [SerializeField]
+    private Projectile projectile;
     protected Animator anim;
     private int ignoreLayer;
     [SerializeField]
     private float visibleRange = 40f;
     [SerializeField]
     private Vector3 navAgentDestination;
+    [SerializeField]
     public float timeAsACorpse = 5;
-    // Test
+    
     public bool findPlayerWithoutRangeOfSight = false;
     public bool alwaysVisible = false;
-    public bool hasBeenSeen = false;
+    private bool hasBeenSeen = false;
 
     private float distanceToPlayer;
     // Start is called before the first frame update
 
     protected void Start()
     {
-
         attackTimer = attackCooldown;
         navAgent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>();
@@ -42,15 +46,13 @@ public class EnemyController : DamagableObject
             (1 << LayerMask.NameToLayer("Treasure")) |
             (1 << LayerMask.NameToLayer("Ignore Raycast")) |
             (1 << LayerMask.NameToLayer("Enemy")));
-        //        ignoreLayer = ~(1 << LayerMask.NameToLayer("Enemy")); // ignore collisions with layerX
-
+        
         InvokeRepeating("Tick", 0, 0.5f);
         if (!alwaysVisible)
         {
             foreach (var r in rendererList)
             {
                 r.enabled = false;
-
             }
         }
     }
@@ -58,7 +60,6 @@ public class EnemyController : DamagableObject
 
     protected void FireProjectileTowardsPlayer(float height = 1.0f)
     {
-
         var start = transform.position;
         start.y = height;
         Vector3 direction = (player.gameObject.transform.position - start).normalized;
@@ -72,7 +73,8 @@ public class EnemyController : DamagableObject
     }
 
 
-    // Update called twice per second. For things that are less time sensitive
+    // Update called twice per second. For things like raycasting that are a bit costly to do every frame with many enemies and
+    // things that are less time sensitive.
     void Tick()
     {
         if(dead)
@@ -116,8 +118,6 @@ public class EnemyController : DamagableObject
             return;
 
         distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-
-
         attackTimer -= Time.deltaTime;
 
         if (distanceToPlayer <= navAgent.stoppingDistance + 1 && attackTimer <= 0)
@@ -137,14 +137,12 @@ public class EnemyController : DamagableObject
             }
         }
     }
-
-
-
+    
     protected void FacePlayer()
     {
         Vector3 direction = (player.transform.position - transform.position).normalized;
         Quaternion lookDirection = Quaternion.LookRotation((new Vector3(direction.x, 0, direction.z)));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookDirection, Time.deltaTime * facePlayerSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookDirection, Time.deltaTime * 5.0f);
     }
 
     void OnDrawGizmosSelected()

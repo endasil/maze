@@ -19,7 +19,6 @@ public class Gold : MonoBehaviour
         // Todo make player object pick up instead
         if(other.gameObject.tag == "Player")
         {
-
             if (pickupSound)
             {
                 AudioSource.PlayClipAtPoint(pickupSound, transform.position);
@@ -29,7 +28,5 @@ public class Gold : MonoBehaviour
             player.GiveGold(goldValue);
             Destroy(gameObject);
         }
-        
-
     }
 }

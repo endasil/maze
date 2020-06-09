@@ -8,22 +8,11 @@ public class ActivateGameObjectWhenCalled : MonoBehaviour
 {
     [SerializeField]
     private int callsBeforeActivate =1;
-
-    public AudioClip activationSound;
+    [SerializeField]
+    private AudioClip activationSound;
     [SerializeField]
     private int callsMade = 0;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     public virtual void ObjectActivated(GameObject other)
     {
 

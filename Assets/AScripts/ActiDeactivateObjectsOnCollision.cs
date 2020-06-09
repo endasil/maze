@@ -15,21 +15,14 @@ public class ActiDeactivateObjectsOnCollision : MonoBehaviour
     protected List<GameObject> objectsToActivate;
     [SerializeField]
     protected List<GameObject> objectsToDeactivate;
-    public OnActivatedEvent notifyWhenActivated;
-    public bool activateOnProjectile = true;
-    public bool activated = false;
-    public AudioClip activationSound;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    [SerializeField]
+    private OnActivatedEvent notifyWhenActivated;
+    [SerializeField]
+    private bool activateOnProjectile = true;
+    [SerializeField]
+    private bool activated = false;
+    [SerializeField]
+    private AudioClip activationSound;
 
     public void OnTriggerEnter(Collider other)
     {

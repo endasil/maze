@@ -43,11 +43,8 @@ public class DamagableObject : MonoBehaviour
         nextHitSoundTime = Time.time + hitSoundRepeatDelay;
         foreach (var r in rendererList)
         {
-
             originalColors.Add(r.material.color);
-
         }
-
     }
 
     public virtual bool Heal(int health)
@@ -67,12 +64,10 @@ public class DamagableObject : MonoBehaviour
     }
     public virtual void TakeDamage(int damage)
     {
-
         if (dead)
             return;
 
         hp -= damage;
-        //Debug.Log($"{this.gameObject.name} Hp left: " + hp);
         StartCoroutine(FlashObject(Color.red, 0.5f, .07f));
         if (hp <= 0)
         {
@@ -85,20 +80,15 @@ public class DamagableObject : MonoBehaviour
             nextHitSoundTime = Time.time + hitSoundRepeatDelay;
             var soundToPlay = Random.Range(0, hitSounds.Count);
             AudioSource.PlayClipAtPoint(hitSounds[soundToPlay], transform.position);
-            
         }
-        
-
     }
 
     protected IEnumerator FlashObject(Color flashColor, float totalTimeToKeepFlashingBetweenColors, float delayBetweenColorChanges)
     {
-
         var flashingFor = 0.0f;
         var setFToFlashColor = true;
         while (flashingFor < totalTimeToKeepFlashingBetweenColors)
         {
-
             for (int i = 0; i < rendererList.Count; i++)
             {
                 rendererList[i].material.color = setFToFlashColor ? flashColor : originalColors[i];
@@ -111,14 +101,13 @@ public class DamagableObject : MonoBehaviour
 
 
         }
+        
         // Set back to original color after flashing is done
-
         for (int i = 0; i < rendererList.Count; i++)
         {
             rendererList[i].material.color = originalColors[i];
 
         }
-
     }
 
 
