@@ -1,3 +1,17 @@
+9/6 
+Made some enemies walk around randomly in the dungeon instead of just standnig still to make things feel more alive and
+less predictable on replay.
+fixed issue with skeletons gliding in the beginning when engaging player.
+Fixed issue with spider animations not player properly.
+Changed so that player takes damage at the hitting point in enemy animation instead of at animation start.
+replace the player capsule with an animated model (still need to fix fire projectile animation). 
+Removed generic hit object sound and only use sound to communicate specific things.
+Added "I can't use that yet" sound when trying to pick up a health potion with full life.
+Made some changes to the start of second level to teach players how to solve some puzzles.
+Added a hidden health potion to level 2.
+Fixed issue with player not flashing red when hit.
+
+
 Release 12
 31 /5 
 Made the visibility range of monsters different than aggro range. You can see monsters before

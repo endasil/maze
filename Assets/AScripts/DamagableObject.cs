@@ -12,6 +12,10 @@ public class DamagableObject : MonoBehaviour
     public List<AudioClip> hitSounds;
     [SerializeField]
     public AudioClip deathSound;
+
+    public AudioClip cantHealSound;
+
+    protected AudioSource audioSource;
     
     [Header("Init Configs")]
     protected float nextHitSoundTime = 1.0f;
@@ -25,7 +29,6 @@ public class DamagableObject : MonoBehaviour
     {
         foreach (Renderer objectRenderer in gameObject.GetComponentsInChildren<Renderer>())
         {
-
             if (objectRenderer.material.HasProperty("_Color"))
             {
                 rendererList.Add(objectRenderer);
@@ -40,6 +43,7 @@ public class DamagableObject : MonoBehaviour
     protected virtual void Awake()
     {
         GetRenderers();
+        audioSource = GetComponent<AudioSource>();
         nextHitSoundTime = Time.time + hitSoundRepeatDelay;
         foreach (var r in rendererList)
         {
@@ -51,6 +55,11 @@ public class DamagableObject : MonoBehaviour
     {
         if (hp >= maxHealth)
         {
+            if (cantHealSound && audioSource)
+            {
+                audioSource.PlayOneShot(cantHealSound, 1.0f);
+            }
+
             return false;
         }
         hp += health;

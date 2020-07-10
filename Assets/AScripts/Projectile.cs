@@ -8,8 +8,7 @@ public class Projectile : MonoBehaviour
 
     public int power = 10;
     public float range = 10;
-    
-    public AudioClip wallImpact;
+
     public AudioClip damagableImpact;
     [SerializeField]
     private Vector3 startPosition;
@@ -21,7 +20,7 @@ public class Projectile : MonoBehaviour
         startPosition = gameObject.transform.position;
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -44,24 +43,14 @@ public class Projectile : MonoBehaviour
 
         if (damagable)
         {
-            
-
-            // Play a default sound when hitting something that can be damaged to ensure there is always
-            // feedback sound even if there is nothing specific for the object.
+            // Play a sound when hitting something that can be damaged 
             if (damagable.hitSounds.Count == 0)
             {
                 AudioSource.PlayClipAtPoint(damagableImpact, transform.position);
             }
             damagable.TakeDamage(power);
         }
-        else
-        {
-            AudioSource.PlayClipAtPoint(wallImpact, transform.position);
-        }
-        //Debug.Log("Projectile destroyed by " + other.name);
-        //if (other.tag == "Wall")
-        //{
-            Destroy(gameObject);
-        //}
+        Destroy(gameObject);
+
     }
 }

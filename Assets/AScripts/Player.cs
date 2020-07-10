@@ -14,9 +14,6 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Player : DamagableObject
 {
-    
-    
-
     [Header("Stats")]
     [SerializeField]
     public int gold = 0;
@@ -30,7 +27,7 @@ public class Player : DamagableObject
     public AudioClip projectileSound;
     public AudioClip noKey;
     public AudioClip noMoney;
-    private AudioSource audioSource;
+    public Animator anim;
 
     
     [Header("Init Configs")]
@@ -51,8 +48,9 @@ public class Player : DamagableObject
 
     private CapsuleCollider playerCollider;
 
-    void Awake()
+    new void Awake()
     {
+        base.Awake();
         if (DataKeeper.instance)
         {
             DataKeeper.instance.LoadPlayer(this);
@@ -65,6 +63,7 @@ public class Player : DamagableObject
         audioSource = GetComponent<AudioSource>();
         navAgent = GetComponent<NavMeshAgent>();
         playerCollider = GetComponent<CapsuleCollider>();
+        anim = GetComponent<Animator>();
         InvokeRepeating("Tick", 0, 0.5f);
     }
 
@@ -84,6 +83,7 @@ public class Player : DamagableObject
     
     void Tick()
     {
+        if (dead) return;
         // Remove the light that shows where the player is going when the player has stopped.
         if (navAgent.velocity.magnitude <= 0)
         {
@@ -94,6 +94,9 @@ public class Player : DamagableObject
     // Update is called once per frame
     void Update()
     {
+        if (dead) return;
+            
+        anim.SetFloat("speed",navAgent.velocity.magnitude);
 
         // Remove fog of war slightly ahead of the player
         clearFOW(transform.position + transform.forward * fowForwardOffsetMultiplier, fowRevealRadius);
@@ -114,10 +117,12 @@ public class Player : DamagableObject
         
         if (Input.GetMouseButtonDown(1) && attackTimer <= 0)
         {
+            
             attackTimer = attackCooldown;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo, 100, clickableLayer))
             {
+                anim.SetTrigger("attack");
                 Vector3 direction = (hitInfo.point - transform.position).normalized;
                 direction.y = 0.0f;
                 var position = transform.position;
@@ -179,15 +184,30 @@ public class Player : DamagableObject
         dict.Add("timeOnLevel", Time.timeSinceLevelLoad);
         dict.Add("timeSinceGameStart", Time.time);
         dict.Add("weaponLevel", weaponLevel);
+        dead = true;
+        Destroy(navAgent);
+        anim.SetTrigger("dying");        
+        AnalyticsEvent.GameOver(SceneManager.GetActiveScene().name, dict);
+        if (deathSound)
+        {
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
+        }
+        
+        StartCoroutine(ReloadSceneAfterTime(4.7f));
+    }
 
-        AnalyticsEvent.GameOver(SceneManager.GetActiveScene().name,dict);
+
+    private IEnumerator ReloadSceneAfterTime(float time)
+    {
+        Debug.Log($"Will reload after {time}");
+        yield return new WaitForSecondsRealtime(time);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        base.Die();
     }
 
     public override void TakeDamage(int damage)
     {
-        base.TakeDamage(damage);
+        if (dead) return;
+            base.TakeDamage(damage);
 
 
         if (nextHitSoundTime < Time.time && hitSounds.Count > 0)
