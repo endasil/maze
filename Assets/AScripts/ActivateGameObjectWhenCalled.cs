@@ -17,7 +17,6 @@ public class ActivateGameObjectWhenCalled : MonoBehaviour
     {
 
         callsMade++;
-        Debug.Log("Method called!!!!");
         if (callsBeforeActivate < callsMade)
             return;
 

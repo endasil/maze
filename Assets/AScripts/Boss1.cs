@@ -62,12 +62,10 @@ public class Boss1 : EnemyController
     {
         int graveNr = Random.Range(0, 3);
         transform.position = summonPos[graveNr];
-        Debug.Log($"Grave teleport to {transform.position}");
     }
     public void ActivateSummonState()
     {
-        anim.SetBool("idle_combat", true);
-        anim.SetBool("idle_normal", false);
+        anim.SetTrigger("Idle_combat_t");
         summonSpell.SetActive(true);
         nextActionTime = Time.time + timeToKeepSummoning;
         combatState = CombatState.Summon;
@@ -77,8 +75,7 @@ public class Boss1 : EnemyController
 
     public void ActivateTeleportState()
     {
-        anim.SetBool("idle_combat", false);
-        anim.SetBool("idle_normal", true);
+        anim.SetTrigger("Idle_normal_t");
         summonSpell.SetActive(false);
         nextActionTime = Time.time + timeBetweenTeleportations;
         combatState = CombatState.Teleport;
@@ -94,8 +91,6 @@ public class Boss1 : EnemyController
         {
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, minPositions.x, maxPositions.z), transform.position.y, Mathf.Clamp(transform.position.z, minPositions.z, maxPositions.z));
             transform.LookAt(player.gameObject.transform);
-            //Debug.Log("Clamp");
-
         }
         if (Time.time > nextActionTime )
         {
@@ -153,7 +148,6 @@ public class Boss1 : EnemyController
         transform.position = player.gameObject.transform.position + Vector3.forward * 21;
         transform.RotateAround(player.transform.position, Vector3.up, angle);
         transform.position.Set(transform.position.x, 3, transform.position.z);
-        //Debug.Log($"Rotational teleport to {transform.position}");
         transform.LookAt(player.gameObject.transform);
         yield return new WaitForSeconds(timeBetweenTeleportations / 4);
         FireProjectileTowardsPlayer(3);

@@ -27,13 +27,13 @@ public class Player : DamagableObject
     public AudioClip projectileSound;
     public AudioClip noKey;
     public AudioClip noMoney;
-    public Animator anim;
+    
 
     
     [Header("Init Configs")]
+    private Animator anim;
     [SerializeField]
     private Light clickLight;
-    [SerializeField]
     private NavMeshAgent navAgent;
     [SerializeField]
     private LayerMask clickableLayer;
@@ -125,13 +125,12 @@ public class Player : DamagableObject
                 anim.SetTrigger("attack");
                 Vector3 direction = (hitInfo.point - transform.position).normalized;
                 direction.y = 0.0f;
-                var position = transform.position;
-                position += direction * 1.1f;
+                var position = transform.position + direction * 1.1f;
                 
                 Quaternion lookDirection = Quaternion.LookRotation((new Vector3(direction.x, 0, direction.z)));
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookDirection, Time.deltaTime * 80);
-                
-                audioSource.PlayOneShot(projectileSound, 0.02f);
+                transform.rotation = lookDirection;
+
+                audioSource.PlayOneShot(projectileSound, 0.03f);
                 GameObject clone = Instantiate(ProjectileTypes[weaponLevel].gameObject, new Vector3(position.x, position.y, position.z),
                     Quaternion.LookRotation(direction, Vector3.up)) as GameObject;
                 clone.SetActive(true);
@@ -193,13 +192,12 @@ public class Player : DamagableObject
             AudioSource.PlayClipAtPoint(deathSound, transform.position);
         }
         
-        StartCoroutine(ReloadSceneAfterTime(4.7f));
+        StartCoroutine(ReloadSceneAfterTime(4.5f));
     }
 
 
     private IEnumerator ReloadSceneAfterTime(float time)
     {
-        Debug.Log($"Will reload after {time}");
         yield return new WaitForSecondsRealtime(time);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

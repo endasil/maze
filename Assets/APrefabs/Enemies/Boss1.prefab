@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6511030713110827612}
   - component: {fileID: 6511030713110827683}
   - component: {fileID: 6511030713110827682}
+  - component: {fileID: 1630879607440730621}
   m_Layer: 10
   m_Name: Boss1
   m_TagString: Boss
@@ -88,11 +89,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d3cab435c8dd6e94897610c663739e14, type: 3}
   - {fileID: 8300000, guid: 572c0b075cc355b4fb78bbb110d7eb78, type: 3}
   deathSound: {fileID: 8300000, guid: a728d3e316885044cb8207fd5d395ff4, type: 3}
+  cantHealSound: {fileID: 0}
   dead: 0
+  TypeOfAI: 0
+  State: 0
   aggroRange: 100
-  facePlayerSpeed: 5
   attackPower: 1
   attackCooldown: 1
+  attackTimer: 0
   projectile: {fileID: 7491618598300992593, guid: 2c08f448c3deb7d45af91e8aee7d1a59,
     type: 3}
   visibleRange: 40
@@ -100,9 +104,12 @@ MonoBehaviour:
   timeAsACorpse: 50000
   findPlayerWithoutRangeOfSight: 0
   alwaysVisible: 1
-  hasBeenSeen: 0
+  maxTimeToWaitAtWaypoint: 5
+  timeLeftToWaitAtWaypoint: 0
   startSummonSound: {fileID: 8300000, guid: aaeca1e40b95fb146b44edb446be2ec1, type: 3}
   endSummonSound: {fileID: 8300000, guid: 4ccd5b49abf899b43a8772e52e99bb74, type: 3}
+  summonHolder: {fileID: 0}
+  skeletonsToSummon: 8
   callWhenDead:
     m_PersistentCalls:
       m_Calls:
@@ -118,6 +125,25 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   enemyTypeToSpawn: {fileID: 521004670, guid: d139727d46a14204285626a8b7ef9525, type: 3}
+--- !u!95 &1630879607440730621
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6511030713110827681}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: be5995a9158bda9459c22d48acd79a3f, type: 3}
+  m_Controller: {fileID: 9100000, guid: bd381ffbd2cda7a4da39842af2be8821, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &6511030713438025585
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -577,7 +603,8 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 95000012767169196, guid: 11db918338e063f4b86b6024c791e5a8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 11db918338e063f4b86b6024c791e5a8, type: 3}
 --- !u!4 &6509361805390778817 stripped
 Transform:

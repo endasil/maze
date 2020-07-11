@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 521004669}
   - component: {fileID: 521004670}
   - component: {fileID: 521004671}
-  - component: {fileID: 1170615805}
+  - component: {fileID: 1645228308}
   m_Layer: 10
   m_Name: skeletonNormal
   m_TagString: Untagged
@@ -216,7 +216,7 @@ Transform:
   m_GameObject: {fileID: 100008}
   m_LocalRotation: {x: 0, y: -0.9652108, z: 0, w: 0.2614732}
   m_LocalPosition: {x: 0.01161301, y: 0.5146427, z: -7.556445}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 400082}
   - {fileID: 400084}
@@ -253,11 +253,12 @@ MonoBehaviour:
   hitSounds:
   - {fileID: 8300000, guid: 66e1d8e05fd1610418d421f0ee1100d7, type: 3}
   deathSound: {fileID: 8300000, guid: 66e1d8e05fd1610418d421f0ee1100d7, type: 3}
+  cantHealSound: {fileID: 0}
   dead: 0
-  TypeOfAI: 0
+  TypeOfAI: 1
   State: 0
-  aggroRange: 100
-  attackPower: 3
+  aggroRange: 23
+  attackPower: 4
   attackCooldown: 1
   attackTimer: 0
   projectile: {fileID: 0}
@@ -266,7 +267,6 @@ MonoBehaviour:
   timeAsACorpse: 5
   findPlayerWithoutRangeOfSight: 0
   alwaysVisible: 0
-  maxTimeToWaitAtWaypoint: 10
   timeLeftToWaitAtWaypoint: 0
 --- !u!195 &521004671
 NavMeshAgent:
@@ -277,11 +277,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 100008}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 4.3
-  m_Acceleration: 8
+  m_Radius: 0.3
+  m_Speed: 6
+  m_Acceleration: 26.94
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 1200
   m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -290,7 +290,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!95 &1170615805
+--- !u!95 &1645228308
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -301,7 +301,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
   m_Controller: {fileID: 9100000, guid: 06c991e3f8784ea4481ea3c2dd979b1c, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -1489,7 +1489,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100084}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 13.62, y: 0, z: 0}
   m_LocalScale: {x: 1.3483, y: 1.3482997, z: 1.3482997}
   m_Children: []
   m_Father: {fileID: 400008}
@@ -1572,7 +1572,7 @@ SkinnedMeshRenderer:
   - {fileID: 400058}
   - {fileID: 400052}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 0}
+  m_RootBone: {fileID: 400082}
   m_AABB:
     m_Center: {x: 0, y: 0, z: 0.360304}
     m_Extent: {x: 0.46471843, y: 0.5623162, z: 0.43994296}

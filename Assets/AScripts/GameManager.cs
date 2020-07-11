@@ -81,8 +81,6 @@ public class GameManager : Singleton<GameManager>
             bossHealthBar.gameObject.SetActive(true);
         }
         InvokeRepeating("Tick", 0, 0.5f);
-
-        Debug.Log(statsText.name);
     }
 
     // Update is called once per frame

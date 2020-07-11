@@ -9,6 +9,6 @@ namespace Assets.AScripts.Enums
     public enum AIState
     {
         DEFAULT_STATE,
-        HUNTING_PLAYER
+        HUNTING_PLAYER,
     }
 }

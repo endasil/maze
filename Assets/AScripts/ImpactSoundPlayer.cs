@@ -15,6 +15,7 @@ public class ImpactSoundPlayer : MonoBehaviour
     // Update is called once per frame
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Collisoin sound");
         if (other.CompareTag("PlayerProjectile"))
         {
             AudioSource.PlayClipAtPoint(impactSound, transform.position);
