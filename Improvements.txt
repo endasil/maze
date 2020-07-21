@@ -1,4 +1,6 @@
-9/6 
+-50.6 1.97, -19.8
+
+12/7 
 Made some enemies walk around randomly in the dungeon instead of just standnig still to make things feel more alive and
 less predictable.
 fixed issue with skeletons gliding in the beginning when engaging player.
