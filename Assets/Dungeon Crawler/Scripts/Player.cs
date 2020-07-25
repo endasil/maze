@@ -47,7 +47,7 @@ public class Player : DamagableObject
     private float attackTimer = 0;
 
     private CapsuleCollider playerCollider;
-
+    private Vector3 attackDirection;
     new void Awake()
     {
         base.Awake();
@@ -123,24 +123,26 @@ public class Player : DamagableObject
             if (Physics.Raycast(ray, out var hitInfo, 100, clickableLayer))
             {
                 anim.SetTrigger("attack");
-                Vector3 direction = (hitInfo.point - transform.position).normalized;
-                direction.y = 0.0f;
-                var position = transform.position + direction * 1.1f;
-                
-                Quaternion lookDirection = Quaternion.LookRotation((new Vector3(direction.x, 0, direction.z)));
-                transform.rotation = lookDirection;
+                attackDirection = (hitInfo.point - transform.position).normalized;
+                attackDirection.y = 0.0f;
 
-                audioSource.PlayOneShot(projectileSound, 0.03f);
-                GameObject clone = Instantiate(ProjectileTypes[weaponLevel].gameObject, new Vector3(position.x, position.y, position.z),
-                    Quaternion.LookRotation(direction, Vector3.up)) as GameObject;
-                clone.SetActive(true);
-                ;
+                Quaternion lookDirection = Quaternion.LookRotation((attackDirection));
+                transform.rotation = lookDirection;
             }
         }
 
     }
 
-
+    // Event sent by attack animation
+    public void AttackEvent()
+    {
+        Debug.Log("Player attack event");
+        audioSource.PlayOneShot(projectileSound, 0.03f);
+        var position = transform.position + transform.forward * 1.1f;
+        GameObject clone = Instantiate(ProjectileTypes[weaponLevel].gameObject, new Vector3(position.x, position.y, position.z),
+            Quaternion.LookRotation(attackDirection, Vector3.up)) as GameObject;
+        clone.SetActive(true);
+    }
     public bool PayMoney(int amount)
     {
         if (gold >= amount)
