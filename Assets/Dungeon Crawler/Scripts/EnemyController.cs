@@ -106,7 +106,7 @@ public class EnemyController : DamagableObject
         }
     }
     
-    // Event sent by attack animation
+    // Triggered by animations
     public void AttackEvent()
     {
         if (dead == true)
