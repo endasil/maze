@@ -29,7 +29,7 @@ public class PowerupProjectileLevel : MonoBehaviour
          
             var player = other.gameObject.GetComponent<Player>();
             AudioSource.PlayClipAtPoint(pickupSound, transform.position);
-            if (player.UpgradetWeaponLevel(1))
+            if (player.UpgradedWeaponLevel(1))
             {
                 AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 
