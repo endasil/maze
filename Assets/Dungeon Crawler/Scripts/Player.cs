@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Analytics;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -14,6 +11,10 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Player : DamagableObject
 {
+    private static readonly int Speed = Animator.StringToHash("speed");
+    private static readonly int Attack = Animator.StringToHash("attack");
+    private static readonly int Dying = Animator.StringToHash("dying");
+
     [Header("Stats")]
     [SerializeField]
     public int gold = 0;
@@ -27,13 +28,11 @@ public class Player : DamagableObject
     public AudioClip projectileSound;
     public AudioClip noKey;
     public AudioClip noMoney;
-    
-
-    
-    [Header("Init Configs")]
-    private Animator anim;
+    [Header("Other")] 
     [SerializeField]
     private Light clickLight;
+    private Animator anim;
+    
     private NavMeshAgent navAgent;
     [SerializeField]
     private LayerMask clickableLayer;
@@ -45,8 +44,6 @@ public class Player : DamagableObject
     private float fowRevealRadius = 15;
 
     private float attackTimer = 0;
-
-    private CapsuleCollider playerCollider;
 
     new void Awake()
     {
@@ -62,14 +59,14 @@ public class Player : DamagableObject
         nextHitSoundTime = Time.time + hitSoundRepeatDelay;
         audioSource = GetComponent<AudioSource>();
         navAgent = GetComponent<NavMeshAgent>();
-        playerCollider = GetComponent<CapsuleCollider>();
         anim = GetComponent<Animator>();
-        InvokeRepeating("Tick", 0, 0.5f);
+        InvokeRepeating(nameof(Tick), 0, 0.5f);
     }
 
 
 
-    void clearFOW(Vector3 revealCenter, float revealRadius)
+    // ReSharper disable once UnusedMember.Local
+    void ClearFoW(Vector3 revealCenter, float revealRadius)
     {
         Collider[] hitColliders = Physics.OverlapSphere(revealCenter, revealRadius, 1 << LayerMask.NameToLayer("FOW"), QueryTriggerInteraction.Collide);
         int i = 0;
@@ -85,7 +82,9 @@ public class Player : DamagableObject
     {
         if (dead) return;
         // Remove the light that shows where the player is going when the player has stopped.
-        if (navAgent.velocity.magnitude <= 0)
+
+        var dist = (navAgent.destination - transform.position).sqrMagnitude; 
+        if (dist <= 2.0f)
         {
             clickLight.transform.position = new Vector3(-200, 3, -200);
         }
@@ -96,10 +95,10 @@ public class Player : DamagableObject
     {
         if (dead) return;
             
-        anim.SetFloat("speed",navAgent.velocity.magnitude);
+        anim.SetFloat(Speed,navAgent.velocity.magnitude);
 
         // Remove fog of war slightly ahead of the player
-        clearFOW(transform.position + transform.forward * fowForwardOffsetMultiplier, fowRevealRadius);
+        // ClearFOW(transform.position + transform.forward * fowForwardOffsetMultiplier, fowRevealRadius);
         attackTimer -= Time.deltaTime;
 
         if (Input.GetMouseButton(0))
@@ -122,7 +121,7 @@ public class Player : DamagableObject
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hitInfo, 100, clickableLayer))
             {
-                anim.SetTrigger("attack");
+                anim.SetTrigger(Attack);
                 Vector3 direction = (hitInfo.point - transform.position).normalized;
                 direction.y = 0.0f;
                 var position = transform.position + direction * 1.1f;
@@ -132,9 +131,8 @@ public class Player : DamagableObject
 
                 audioSource.PlayOneShot(projectileSound, 0.03f);
                 GameObject clone = Instantiate(ProjectileTypes[weaponLevel].gameObject, new Vector3(position.x, position.y, position.z),
-                    Quaternion.LookRotation(direction, Vector3.up)) as GameObject;
+                    Quaternion.LookRotation(direction, Vector3.up));
                 clone.SetActive(true);
-                ;
             }
         }
 
@@ -178,14 +176,16 @@ public class Player : DamagableObject
     public override void Die()
     {
         
-        var dict = new Dictionary<string,object>();
-        dict.Add("position", gameObject.transform.position);
-        dict.Add("timeOnLevel", Time.timeSinceLevelLoad);
-        dict.Add("timeSinceGameStart", Time.time);
-        dict.Add("weaponLevel", weaponLevel);
+        var dict = new Dictionary<string,object>
+        {
+            { "position", gameObject.transform.position },
+            { "timeOnLevel", Time.timeSinceLevelLoad },
+            { "timeSinceGameStart", Time.time },
+            { "weaponLevel", weaponLevel }
+        };
         dead = true;
         Destroy(navAgent);
-        anim.SetTrigger("dying");        
+        anim.SetTrigger(Dying);        
         AnalyticsEvent.GameOver(SceneManager.GetActiveScene().name, dict);
         if (deathSound)
         {
@@ -232,7 +232,7 @@ public class Player : DamagableObject
     {
         return weaponLevel;
     }
-    public bool UpgradetWeaponLevel(int level)
+    public bool UpgradedWeaponLevel(int level)
     {
 
         if (weaponLevel <= level)

@@ -21,7 +21,7 @@ public class DataKeeper : MonoBehaviour
     public void LoadPlayer(Player player)
     {
         player.SetGold(gold);
-        player.UpgradetWeaponLevel(weaponLevel);
+        player.UpgradedWeaponLevel(weaponLevel);
     }
     void Awake()
     {
