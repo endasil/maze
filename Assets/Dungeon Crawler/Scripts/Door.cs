@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿z
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,11 +11,9 @@ public class Door : MonoBehaviour
     [SerializeField]
     private AudioClip openSound;
 
-    private bool doorOpened = false;
     void OnTriggerEnter(Collider other)
     {
-        
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.CompareTag("Player"))
         {
 
             if (openSound)
