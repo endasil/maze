@@ -1,5 +1,4 @@
-﻿z
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class Door : MonoBehaviour
