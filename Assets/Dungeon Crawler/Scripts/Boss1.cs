@@ -6,8 +6,10 @@ using Random = UnityEngine.Random;
 
 public class Boss1 : EnemyController
 {
+    private static readonly int IdleCombatT = Animator.StringToHash("idle_combat");
+    private static readonly int IdleNormalT = Animator.StringToHash("idle_normal");
 
-    enum CombatState
+    private enum CombatState
     {
         Summon,
         Teleport
@@ -23,8 +25,8 @@ public class Boss1 : EnemyController
     [Header("Other")]
     private CombatState combatState = CombatState.Summon;
     private float nextActionTime = 0;
-    private float timeBetweenTeleportations = 1.1f;
-    private float timeToKeepSummoning = 12.0f;
+    private readonly float timeBetweenTeleportations = 1.1f;
+    private readonly float timeToKeepSummoning = 12.0f;
     private GameObject summonSpell;
     [SerializeField]
     private Transform summonHolder;
@@ -51,21 +53,22 @@ public class Boss1 : EnemyController
         base.Start();
         summonSpell = transform.Find("SummonSpell").gameObject;
         summonHolder = GameObject.Find("SummonHolder").transform;
-        player = FindObjectOfType<Player>();
+        player = FindAnyObjectByType<Player>();
         anim = GetComponentInChildren<Animator>();
         ActivateSummonState();
         nextActionTime = Time.time + 5;
         transform.position = summonPos[1];
     }
 
-    public void TeleportToGrave()
+    private void TeleportToGrave()
     {
         int graveNr = Random.Range(0, 3);
         transform.position = summonPos[graveNr];
     }
-    public void ActivateSummonState()
+
+    private void ActivateSummonState()
     {
-        anim.SetTrigger("Idle_combat_t");
+        anim.SetTrigger(IdleCombatT);
         summonSpell.SetActive(true);
         nextActionTime = Time.time + timeToKeepSummoning;
         combatState = CombatState.Summon;
@@ -73,9 +76,9 @@ public class Boss1 : EnemyController
         transform.forward = Vector3.forward;
     }
 
-    public void ActivateTeleportState()
+    private void ActivateTeleportState()
     {
-        anim.SetTrigger("Idle_normal_t");
+        anim.SetTrigger(IdleNormalT);
         summonSpell.SetActive(false);
         nextActionTime = Time.time + timeBetweenTeleportations;
         combatState = CombatState.Teleport;
@@ -92,9 +95,11 @@ public class Boss1 : EnemyController
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, minPositions.x, maxPositions.z), transform.position.y, Mathf.Clamp(transform.position.z, minPositions.z, maxPositions.z));
             transform.LookAt(player.gameObject.transform);
         }
-        if (Time.time > nextActionTime )
+
+        if (!(Time.time > nextActionTime)) return;
+        switch (combatState)
         {
-            if (combatState == CombatState.Teleport)
+            case CombatState.Teleport:
             {
                 nextActionTime = Time.time + timeBetweenTeleportations;
                 // If no enemies left, go to graveyard and start summon animation
@@ -105,23 +110,23 @@ public class Boss1 : EnemyController
                 }
                 else
                 {
-                    StartCoroutine("Teleport");
+                    StartCoroutine(nameof(Teleport));
                 }
-            }
 
-            else if (combatState == CombatState.Summon)
-            {
+                break;
+            }
+            case CombatState.Summon:
                 // At the end of summon time, spawn the actual enemies
                 Summon(skeletonsToSummon);
                 ActivateTeleportState();
-            }
+                break;
         }
     }
 
-    
-    public void Summon(int nrOfSummons)
+
+    private void Summon(int nrOfSummons)
     {
-        var position = transform.position;
+        Vector3 position = transform.position;
         position += transform.forward * 9f;
         AudioSource.PlayClipAtPoint(endSummonSound, transform.position,1.0f);
         for (int skeletonNr = 0; skeletonNr < nrOfSummons; skeletonNr++)
@@ -142,7 +147,7 @@ public class Boss1 : EnemyController
         base.Die();
     }
 
-    IEnumerator Teleport()
+    private IEnumerator Teleport()
     {
         int angle = Random.Range(0, 360);
         transform.position = player.gameObject.transform.position + Vector3.forward * 21;
