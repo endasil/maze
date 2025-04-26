@@ -319,7 +319,7 @@ namespace DunGen
 			ChangeStatus(GenerationStatus.Complete);
 
 			// Let DungenCharacters know that they should re-check the Tile they're in
-			foreach (var character in Component.FindObjectsOfType<DungenCharacter>())
+			foreach (var character in Component.FindObjectsByType<DungenCharacter>(FindObjectsSortMode.None))
 				character.ForceRecheckTile();
 		}
 

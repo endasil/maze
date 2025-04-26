@@ -71,7 +71,7 @@ namespace DunGen.Demo
 
 		public static void Log(string format, params object[] args)
 		{
-			var component = Component.FindObjectOfType<ScreenText>();
+			var component = Component.FindAnyObjectByType<ScreenText>();
 
 			if (component == null)
 				return;

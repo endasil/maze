@@ -67,7 +67,7 @@ namespace DunGen
 
 		protected virtual void Awake()
 		{
-			var runtimeDungeon = FindObjectOfType<RuntimeDungeon>();
+			var runtimeDungeon = FindAnyObjectByType<RuntimeDungeon>();
 
 			if (runtimeDungeon != null)
 			{

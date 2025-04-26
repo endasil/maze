@@ -19,8 +19,8 @@ public class Exit : MonoBehaviour
     void Start()
     {
         textMesh = GetComponent<TextMeshPro>();
-        player = FindObjectOfType<Player>();
-        dataKeeper = FindObjectOfType<DataKeeper>();
+        player = FindFirstObjectByType<Player>();
+        dataKeeper = FindFirstObjectByType<DataKeeper>();
     }
 
     void OnTriggerEnter(Collider other)

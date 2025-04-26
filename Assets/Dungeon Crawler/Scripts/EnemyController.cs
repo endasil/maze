@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Assets.AScripts.Enums;
-using UnityEditor;
+﻿using Assets.AScripts.Enums;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,7 +24,7 @@ public class EnemyController : DamagableObject
     public bool findPlayerWithoutRangeOfSight = false;
     public bool alwaysVisible = false;
     [SerializeField] private bool hasBeenSeen = false;
-    private float maxTimeToWaitAtWaypoint = 6;
+    private readonly float maxTimeToWaitAtWaypoint = 6;
     public float timeLeftToWaitAtWaypoint = 0;
 
     private float distanceToPlayer;
@@ -39,7 +35,7 @@ public class EnemyController : DamagableObject
         //alwaysVisible = true;
         attackTimer = attackCooldown;
         navAgent = GetComponent<NavMeshAgent>();
-        player = FindObjectOfType<Player>();
+        player = FindAnyObjectByType<Player>();
         anim = GetComponent<Animator>();
         ignoreLayer = ~(
             (1 << LayerMask.NameToLayer("Treasure")) |

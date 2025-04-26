@@ -17,7 +17,7 @@ namespace DunGen.Demo2D
 			collider = GetComponent<CircleCollider2D>();
 			hitBuffer = new RaycastHit2D[10];
 
-			var gen = GameObject.FindObjectOfType<Generator>();
+			var gen = GameObject.FindAnyObjectByType<Generator>();
 			dungeonGenerator = gen.DungeonGenerator.Generator;
 
 			dungeonGenerator.OnGenerationStatusChanged += OnGeneratorStatusChanged;

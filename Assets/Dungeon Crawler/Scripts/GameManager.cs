@@ -71,7 +71,7 @@ public class GameManager : Singleton<GameManager>
         {
            boss = FindGameObjectsWithTag("Boss").FirstOrDefault()?.GetComponent<DamagableObject>();
         }
-        player = FindObjectOfType<Player>();
+        player = FindAnyObjectByType<Player>();
         statsText = GetComponentInChildren<TextMeshProUGUI>();
         Transform canavas = GetComponentInChildren<Canvas>().transform;
         healthBar = canavas.Find("PlayerHealthBar").gameObject.GetComponentInChildren<Scrollbar>();

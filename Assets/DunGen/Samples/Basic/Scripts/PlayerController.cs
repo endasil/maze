@@ -32,7 +32,7 @@ namespace DunGen.Demo
 		{
 			movementController = GetComponent<CharacterController>();
 			playerCamera = GetComponentInChildren<Camera>();
-			gen = GameObject.FindObjectOfType<Generator>();
+			gen = GameObject.FindAnyObjectByType<Generator>();
 			overheadCamera = GameObject.Find("Overhead Camera").GetComponent<Camera>();
 
 			isControlling = true;

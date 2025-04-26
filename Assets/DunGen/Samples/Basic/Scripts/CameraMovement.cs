@@ -9,7 +9,7 @@ namespace DunGen.Demo
 
 		private void Start()
 		{
-			RuntimeDungeon runtimeDungeon = Component.FindObjectOfType<RuntimeDungeon>();
+			RuntimeDungeon runtimeDungeon = Component.FindAnyObjectByType<RuntimeDungeon>();
 
 			if (runtimeDungeon != null)
 				transform.forward = -runtimeDungeon.Generator.UpVector;

@@ -9,7 +9,7 @@ public class ProjectileSale : ItemSale
     // Start is called before the first frame update
     public new void Start()
     {
-        var player = FindObjectOfType<Player>();
+        var player = FindAnyObjectByType<Player>();
         if (player.GetWeaponLevel() >= weaponLevel)
         {
             gameObject.SetActive(false);

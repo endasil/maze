@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
-namespace DunGen
+namespace DunGen 
 {
 	public delegate void DungenCharacterDelegate(DungenCharacter character);
     public delegate void CharacterTileChangedEvent(DungenCharacter character, Tile previousTile, Tile newTile);
@@ -56,7 +53,7 @@ namespace DunGen
 
         internal void ForceRecheckTile()
         {
-            foreach(var tile in Component.FindObjectsOfType<Tile>())
+            foreach(var tile in Component.FindObjectsByType<Tile>(FindObjectsSortMode.None))
                 if (tile.Placement.Bounds.Contains(transform.position))
                 {
                     HandleTileChange(tile);
