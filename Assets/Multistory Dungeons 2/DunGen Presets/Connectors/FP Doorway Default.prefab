@@ -40,6 +40,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a188f8ee195cf4cb8b2fdccd193b79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SocketGroup: 0
   DoorPrefabPriority: 0
   DoorPrefabs:
   - {fileID: 103836, guid: 0cc86250f8d74402a14dfeacdb0fb541, type: 2}
@@ -53,8 +54,7 @@ MonoBehaviour:
   AvoidRotatingBlockerPrefab: 0
   AddWhenInUse: []
   AddWhenNotInUse: []
-  socketGroup_obsolete: 0
-  socket: {fileID: 114347490813842542, guid: 2e63e2d4d65f6a84eb752650ad8e7fe0, type: 2}
+  Size: {x: 4, y: 6}
   doorPrefab: {fileID: 0}
   doorComponent: {fileID: 0}
   tile: {fileID: 0}

@@ -1,3 +1,66 @@
 Can walk trough door on first and second level without key
 graves are not visible on second level 
 boss is not visible
+
+
+prydnad
+Brick_01
+Brick_02
+Brick_03
+storlek 1:
+Wall_03
+ojämn 1
+Wall_Preset_03_Damaged
+Wall_Preset_04_Damaged
+Wall_Right_02_Damaged
+Wall_Left_02_Damaged
+arch_01
+arch_02
+Arch_Big_01
+Arch_Tall_01
+Arch_Top_02
+större än 1 ojämn
+Wall_Filler_01
+
+storlek 2
+	Arch_Alley_01
+	Arch_Alley_02
+	Arch_Alley_Corner_01
+	Damaged_Arch_Alley_01
+	Damaged_Arch_Alley_01
+	Damaged_Arch_Alley_02
+	Damaged_Arch_Alley_03
+	Damaged_Arch_Alley_04
+
+	Damaged_Arch_Alley_Corner_01
+	Damaged_Arch_Alley_Corner_02
+	Damaged_Arch_Alley_Corner_03
+	Damaged_Wall_Left_01
+	Damaged_Wall_Right_01
+	Wall_01
+	Wall_Arch_Door_01
+	Wall_Arch_Door_02
+	Wall_Arch_Preset_01
+	Wall_Arch_Preset_02
+	Wall_Arch_Preset_03
+	Wall_Arch_Preset_04
+	Wall_Corner_01
+	Wall_Corner_02
+	Wall_Inner_Corner_01
+	Wall_Inner_Corner_02
+	Wall_Inner_Corner_03
+	Wall_Inner_Corner_04
+	Wall_Inner_Corner_05
+	Wall_Inner_Corner_06
+	Wall_Inner_Corner_07
+	Wall_Outer_Corner_01
+	Wall_Outer_Corner_02
+	Wall_Outer_Corner_03
+	Wall_Outer_Corner_04
+	Wall_Outer_Corner_05
+	Wall_Outer_Corner_06
+	Wall_Outer_Corner_07
+	Wall_Preset_01
+	Wall_Preset_02
+	Wall_Preset_03
+
