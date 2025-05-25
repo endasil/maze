@@ -1,77 +1,119 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
-public class WallTransparencyManager : MonoBehaviour
+public sealed class WallTransparencyManager : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private Material transparentMaterial;
     [SerializeField] private float checkInterval = 0.1f;
     [SerializeField] private float sphereRadius = 0.5f;
+    [SerializeField] private float fadeSpeed = 3f;
 
-    private const int MaxWallHits = 32;
-    private readonly RaycastHit[] _hitBuffer = new RaycastHit[MaxWallHits];
+    private readonly RaycastHit[] _hits = new RaycastHit[64];
+    private readonly Dictionary<Renderer, WallData> _walls = new();
+    private readonly HashSet<Renderer> _current = new();
+    private float _nextCheck;
 
-    private readonly HashSet<FadeWall> _currentWalls = new();
-    private readonly HashSet<FadeWall> _previousFrameWalls = new();
-    private float _lastCheckTime;
-
-    private void Start()
+    private sealed class WallData
     {
-        FadeWall.SetSharedTransparentMaterial(transparentMaterial);
+        public readonly Material Opaque;
+        public readonly Material Transparent;
+        public readonly MaterialPropertyBlock Block = new();
+        public Coroutine Fade;
+        public float Alpha = 1f;
+
+        public WallData(Material original)
+        {
+            Opaque = new Material(original);
+            Transparent = new Material(original);
+            ConvertToTransparent(Transparent);
+        }
+
+        private static void ConvertToTransparent(Material mat)
+        {
+            mat.SetFloat("_Surface", 1f);
+            mat.SetOverrideTag("RenderType", "Transparent");
+
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.EnableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+
+            mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            mat.DisableKeyword("_SURFACE_TYPE_OPAQUE");
+
+            mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        }
     }
+
     private void Update()
     {
-        if (Time.time - _lastCheckTime < checkInterval) return;
-        _lastCheckTime = Time.time;
+        if (Time.time < _nextCheck) return;
+        _nextCheck = Time.time + checkInterval;
 
         Vector3 camPos = transform.position;
         Vector3 dir = (player.position - camPos).normalized;
         float dist = Vector3.Distance(camPos, player.position);
-        
-        _previousFrameWalls.Clear();
-        // Copy current walls to previous frames list of walls. 
-        _previousFrameWalls.UnionWith(_currentWalls);
-        _currentWalls.Clear();
 
-        // SphereCast catches walls more reliably than thin Raycast
-        var size = Physics.SphereCastNonAlloc(camPos, sphereRadius, dir, _hitBuffer, dist, wallLayer, QueryTriggerInteraction.Ignore);
+        _current.Clear();
         
-        for (int i = 0; i < size; i++)
+        int hitCount = Physics.SphereCastNonAlloc(camPos, sphereRadius, dir, _hits, dist, wallLayer, QueryTriggerInteraction.Ignore);
+
+        for (int i = 0; i < hitCount; i++)
         {
-            FadeWall wall = _hitBuffer[i].collider.GetComponent<FadeWall>();
-            if (!wall) continue;
-            
-            Vector3 rayDir = (player.position - camPos).normalized;
-            Vector3 hitPoint = _hitBuffer[i].point;
-            Vector3 normal = _hitBuffer[i].normal;
+            var hit = _hits[i];
+            var rend = hit.collider.GetComponent<Renderer>();
+            if (!rend) continue;
 
-            float facingDot = Vector3.Dot(normal, rayDir);
+            // Only fade if back of wall is hit
+            if (Vector3.Dot(hit.normal, dir) >= 0f) continue;
 
-            // Draw wall surface normal in green
-            Debug.DrawRay(hitPoint, normal, Color.green, 1f);
+            _current.Add(rend);
 
-            // Draw camera-to-player ray in red (direction we're casting)
-            Debug.DrawRay(camPos, rayDir * Vector3.Distance(camPos, player.position), Color.red, 1f);
-            
-            if (facingDot < 0)
+            if (!_walls.TryGetValue(rend, out var data))
             {
-                Debug.Log($"facingDot {facingDot}");
-                // Player is behind the wall
-                wall.FadeToTransparent();
-                _currentWalls.Add(wall);
+                data = new WallData(rend.sharedMaterial);
+                _walls.Add(rend, data);
             }
-            else
-            {
-                Debug.Log("Player not behind the wall");
-            }
-            
+
+            if (data.Fade == null) data.Fade = StartCoroutine(Fade(rend, data, 0.1f));
         }
 
-        foreach (FadeWall wall in _previousFrameWalls)
+        foreach (var pair in _walls)
         {
-            if (!_currentWalls.Contains(wall))
-                wall.FadeToOpaque();
+            if (_current.Contains(pair.Key) || pair.Value.Fade != null) continue;
+            pair.Value.Fade = StartCoroutine(Fade(pair.Key, pair.Value, 1f));
         }
     }
+
+    private IEnumerator Fade(Renderer rend, WallData data, float targetAlpha)
+    {
+        bool goingTransparent = targetAlpha < 1f;
+        bool goingOpaque      = targetAlpha >= 1f;
+
+        if (goingTransparent && data.Alpha >= 1f)
+            rend.material = data.Transparent;
+
+        while (!Mathf.Approximately(data.Alpha, targetAlpha))
+        {
+            data.Alpha = Mathf.MoveTowards(data.Alpha, targetAlpha, fadeSpeed * Time.deltaTime);
+            data.Block.SetColor("_BaseColor", new Color(1f, 1f, 1f, data.Alpha));
+            rend.SetPropertyBlock(data.Block);
+            yield return null;
+        }
+
+        if (goingOpaque)
+        {
+            rend.SetPropertyBlock(null);
+            yield return null; // ✅ wait one frame before swapping back
+            rend.material = data.Opaque;
+        }
+
+        data.Fade = null;
+    }
+
 }
