@@ -4855,7 +4855,7 @@ PrefabInstance:
     - target: {fileID: 5244699383497560532, guid: be3b33c2e05b58742837bd9141e55a2e,
         type: 3}
       propertyPath: m_Shadows.m_Type
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
