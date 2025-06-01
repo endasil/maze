@@ -36,11 +36,13 @@ public class ActiDeactivateObjectsOnCollision : MonoBehaviour
             foreach (var o in objectsToActivate)
             {
                 o.SetActive(true);
+                Debug.Log($"activated {o.name}");
             }
 
             foreach (var o in objectsToDeactivate)
             {
                 o.SetActive(false);
+                Debug.Log($"deactivated {o.name}");
             }
 
             notifyWhenActivated.Invoke(this.gameObject);

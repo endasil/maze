@@ -66297,12 +66297,12 @@ PrefabInstance:
     - target: {fileID: 6511030713110827682, guid: 339d085261b2dcd41a9608c04089976b,
         type: 3}
       propertyPath: hp
-      value: 8
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 6511030713110827682, guid: 339d085261b2dcd41a9608c04089976b,
         type: 3}
       propertyPath: maxHealth
-      value: 8
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 6511030713110827682, guid: 339d085261b2dcd41a9608c04089976b,
         type: 3}

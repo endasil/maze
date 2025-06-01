@@ -17,8 +17,8 @@ public class PlayerCamera : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    
+    void LateUpdate()
     {
         _movmentX = ((Player.transform.position.x + OffsetX - this.transform.position.x)) / MaximumDistance;
         _movmentY = ((Player.transform.position.y + OffsetY - this.transform.position.y)) / MaximumDistance;

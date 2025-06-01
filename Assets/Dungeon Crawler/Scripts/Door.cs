@@ -14,15 +14,17 @@ public class Door : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Collision with player");
 
-            if (openSound)
-            {
-                AudioSource.PlayClipAtPoint(openSound, transform.position);
-            }
-
+            
             var player = other.gameObject.GetComponent<Player>();
             if (player.UseKey())
             {
+                Debug.Log("Player has key, unlocking door");
+                if (openSound)
+                {
+                    AudioSource.PlayClipAtPoint(openSound, transform.position);
+                }
                 leftDoor.Rotate(Vector3.up, 90);
                 rightDoor.Rotate(Vector3.up, -90);
                 Destroy(GetComponent<NavMeshObstacle>());
