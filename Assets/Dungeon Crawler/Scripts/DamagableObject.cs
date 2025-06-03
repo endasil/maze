@@ -21,6 +21,8 @@ public class DamagableObject : MonoBehaviour
     protected float nextHitSoundTime = 1.0f;
     protected float hitSoundRepeatDelay = 1;
     private List<Color> originalColors = new List<Color>();
+    public bool IsDead => dead;
+
     [SerializeField]
     protected bool dead = false;
 

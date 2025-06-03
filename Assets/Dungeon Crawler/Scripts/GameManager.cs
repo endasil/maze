@@ -22,8 +22,8 @@ public class GameManager : Singleton<GameManager>
     private Player player;
     [SerializeField] 
     private DamagableObject boss;
-    private Scrollbar healthBar;
-    private Scrollbar bossHealthBar;
+    private Slider healthBar;
+    private Slider bossHealthBar;
     public int FogOfWarMinZValue = -56;
     public int FogOfWarMaxZValue = 56;
     public int FogOfWarMinXValue = -60;
@@ -74,10 +74,12 @@ public class GameManager : Singleton<GameManager>
         player = FindAnyObjectByType<Player>();
         statsText = GetComponentInChildren<TextMeshProUGUI>();
         Transform canavas = GetComponentInChildren<Canvas>().transform;
-        healthBar = canavas.Find("PlayerHealthBar").gameObject.GetComponentInChildren<Scrollbar>();
+        healthBar = canavas.Find("PlayerHealthBar").gameObject.GetComponentInChildren<Slider>();
+        healthBar.maxValue = player.maxHealth;
         if (boss)
         {
-            bossHealthBar = canavas.Find("BossHealthBar").gameObject.GetComponentInChildren<Scrollbar>();
+            bossHealthBar = canavas.Find("BossHealthBar").gameObject.GetComponentInChildren<Slider>();
+            bossHealthBar.maxValue = boss.maxHealth;
             bossHealthBar.gameObject.SetActive(true);
         }
         InvokeRepeating("Tick", 0, 0.5f);
@@ -114,12 +116,12 @@ public class GameManager : Singleton<GameManager>
     {
 
         statsText.SetText($"{player.Keys} Gold: {player.gold}  {(showFPS ? $@"{fps:F1} FPS" : "")} ");
-        healthBar.size = (float)player.hp / player.maxHealth;
+        healthBar.value = (float)player.hp;
 
 
         if (bossHealthBar)
         {
-            bossHealthBar.size = (float)boss.hp / boss.maxHealth;
+            bossHealthBar.value = (float)boss.hp;
             if (boss.hp <= 0)
             {
                 Destroy(bossHealthBar.gameObject);

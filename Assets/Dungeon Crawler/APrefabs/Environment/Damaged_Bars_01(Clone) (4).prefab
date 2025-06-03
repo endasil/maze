@@ -122,8 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 604712fd1e5199f48886b68d9b247486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
-  hp: 20
+  maxHealth: 15
+  hp: 15
   hitSounds: []
   deathSound: {fileID: 0}
   cantHealSound: {fileID: 0}

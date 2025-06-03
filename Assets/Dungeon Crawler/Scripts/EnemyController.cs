@@ -28,8 +28,7 @@ public class EnemyController : DamagableObject
     public float timeLeftToWaitAtWaypoint = 0;
 
     private float distanceToPlayer;
-    private bool test = false;
-
+    
     protected void Start()
     {
         //alwaysVisible = true;
@@ -158,13 +157,11 @@ public class EnemyController : DamagableObject
         {
             State = AIState.DEFAULT_STATE;
             timeLeftToWaitAtWaypoint = maxTimeToWaitAtWaypoint;
-            test = true;
         }
         
         if (State == AIState.DEFAULT_STATE && 
             navAgent.velocity.sqrMagnitude < 0.1 && timeLeftToWaitAtWaypoint <= 0)
         {
-            test = false;
             timeLeftToWaitAtWaypoint = Random.Range(1.0f, maxTimeToWaitAtWaypoint);
             var rp = Random.insideUnitCircle * 20;
             navAgent.destination = transform.position + new Vector3(rp.x, 0, rp.y);
